@@ -14,5 +14,5 @@ class EndpointDataClass:
     progress: int
     duration: int
     delegation: int
-    # details
+    # details: List[EndpointDetailsDataClass]  # This is just a reminder 
     
