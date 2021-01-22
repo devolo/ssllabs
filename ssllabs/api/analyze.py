@@ -32,6 +32,4 @@ class Analyze(_Api):
         """
         r = await self._call("analyze", host=host, **kwargs)
         data = from_dict(data_class=HostData, data=r.json())
-        # if json["status"] == "READY":
-        #     json["endpoints"] = [EndpointData(**x) for x in r.json()["endpoints"]]
         return data

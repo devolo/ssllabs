@@ -1,6 +1,8 @@
 from ..data.status_codes import StatusCodesData
 from ._api import _Api
 
+from dacite import from_dict
+
 
 class StatusCodes(_Api):
     """Retrieve known status codes.
@@ -11,4 +13,4 @@ class StatusCodes(_Api):
     async def get(self) -> StatusCodesData:
         """Retrieve known status codes."""
         r = await self._call("getStatusCodes")
-        return StatusCodesData(**r.json())
+        return from_dict(data_class=StatusCodesData, data=r.json())

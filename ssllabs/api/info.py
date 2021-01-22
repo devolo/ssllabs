@@ -1,6 +1,6 @@
 from ..data.info import InfoData
 from ._api import _Api
-
+from dacite import from_dict
 
 class Info(_Api):
     """General information about the ssllabs API.
@@ -11,4 +11,4 @@ class Info(_Api):
     async def get(self) -> InfoData:
         """Get information."""
         r = await self._call("info")
-        return InfoData(**r.json())
+        return from_dict(data_class=InfoData, data=r.json())

@@ -1,6 +1,8 @@
 from ..data.endpoint import EndpointData
 from ._api import _Api
 
+from dacite import from_dict
+
 
 class Endpoint(_Api):
     """Retrieve detailed endpoint information.
@@ -18,4 +20,4 @@ class Endpoint(_Api):
                         time as the startNew parameter.
         """
         r = await self._call("getEndpointData", host=host, s=endpoint_ip, **kwargs)
-        return EndpointData(**r.json())
+        return from_dict(data_class=EndpointData, data=r.json())
