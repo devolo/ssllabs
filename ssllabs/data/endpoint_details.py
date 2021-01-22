@@ -1,9 +1,13 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
+from .certificate_chain import CertificateChainData
+from .protocol import ProtocolData
+from .suite import SuiteData
+
 
 @dataclass
-class EndpointDetails:
+class EndpointDetailsData:
     """Dataclass for endpoint detail objects.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#endpointdetails
@@ -15,16 +19,16 @@ class EndpointDetails:
     several HTTP invocations. Then, you should check that the hostStartTime value matches the startTime value of the host.
     """
 
-    # certChains: List[]
+    certChains: List[CertificateChainData]
     """Server Certificate chains"""
 
-    # protocols: List[]
+    protocols: List[ProtocolData]
     """Supported protocols"""
 
-    # suites: List[]
+    suites: List[SuiteData]
     """Supported cipher suites per protocol"""
 
-    # noSniSuites:
+    noSniSuites: SuiteData
     """Cipher suites observed only with client that does not support Server Name Indication (SNI)."""
 
     # namedGroups:
