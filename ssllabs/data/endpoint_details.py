@@ -66,7 +66,6 @@ class EndpointDetails:
     alpnProtocols: str
     """Space separated list of supported ALPN protocols"""
 
-    # ToDo: Check typing
     sessionTickets: int
     """Indicates support for Session Tickets"""
 
@@ -82,14 +81,12 @@ class EndpointDetails:
     sniRequired: bool
     """If SNI support is required to access the web site."""
 
-    # ToDo: Check typing
     httpStatusCode: int
     """
     Status code of the final HTTP response seen. When submitting HTTP requests, redirections are followed, but only if they
     lead to the same hostname. If this field is not available, that means the HTTP request failed.
     """
 
-    # ToDo: Check typing
     httpForwarding: str
     """Available on a server that responded with a redirection to some other hostname."""
 
@@ -102,7 +99,6 @@ class EndpointDetails:
     rc4Only: bool
     """True if only RC4 suites are supported."""
 
-    # ToDo: Check typing
     forwardSecrecy: int
     """Indicates support for Forward Secrecy"""
 
@@ -112,11 +108,9 @@ class EndpointDetails:
     supportsCBC: bool
     """True if the server supports at least one CBC suite."""
 
-    # ToDo: Check typing
     protocolIntolerance: int
     """Indicates protocol version intolerance issues"""
 
-    # ToDo: Check typing
     miscIntolerance: int
     """Indicates various other types of intolerance"""
 
@@ -168,7 +162,6 @@ class EndpointDetails:
     freak: bool
     """True if the server is vulnerable to the FREAK attack, meaning it supports 512-bit key exchange."""
 
-    # ToDo: Check typing
     hasSct: int
     """Information about the availability of certificate transparency information (embedded SCTs)"""
 
