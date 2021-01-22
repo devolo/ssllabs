@@ -1,14 +1,15 @@
+from dacite import from_dict
+
 from ..data.endpoint import EndpointData
 from ..data.host import HostData
 from ._api import _Api
-from dacite import from_dict
+
 
 class Analyze(_Api):
     """Invoke assessment and check progress.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#invoke-assessment-and-check-progress
     """
-
     async def get(self, host: str, **kwargs) -> HostData:
         """Analyze host.
 
