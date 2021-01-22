@@ -15,19 +15,19 @@ class EndpointDetails:
     several HTTP invocations. Then, you should check that the hostStartTime value matches the startTime value of the host.
     """
 
-    #certChains: List[]
+    # certChains: List[]
     """Server Certificate chains"""
 
-    #protocols: List[]
+    # protocols: List[]
     """Supported protocols"""
 
-    #suites: List[]
+    # suites: List[]
     """Supported cipher suites per protocol"""
 
-    #noSniSuites:
+    # noSniSuites:
     """Cipher suites observed only with client that does not support Server Name Indication (SNI)."""
 
-    #namedGroups:
+    # namedGroups:
     """Instance of NamedGroups object."""
 
     serverSignature: str
@@ -114,7 +114,7 @@ class EndpointDetails:
     miscIntolerance: int
     """Indicates various other types of intolerance"""
 
-    #sims:
+    # sims:
     """Instance of SimDetails."""
 
     heartbleed: bool
@@ -181,27 +181,30 @@ class EndpointDetails:
     """True if the server uses DH parameters weaker than 1024 bits."""
 
     chaCha20Preference: bool
-    """True if the server takes into account client preferences when deciding if to use ChaCha20 suites. Will be deprecated in new version."""
+    """
+    True if the server takes into account client preferences when deciding if to use ChaCha20 suites. Will be deprecated in
+    new version.
+    """
 
-    #hstsPolicy:
+    # hstsPolicy:
     """Server's HSTS policy. Experimental."""
 
-    #hstsPreloads: List[]
+    # hstsPreloads: List[]
     """Information about preloaded HSTS policies."""
 
-    #hpkpPolicy:
+    # hpkpPolicy:
     """Server's HPKP policy."""
 
-    #hpkpRoPolicy:
+    # hpkpRoPolicy:
     """Server's HPKP-RO policy."""
 
-    #staticPkpPolicy:
+    # staticPkpPolicy:
     """Server's SPKP policy."""
 
-    #httpTransactions: List[]
+    # httpTransactions: List[]
     """An array of HttpTransaction objects."""
 
-    #drownHosts: List[]
+    # drownHosts: List[]
     """List of DROWN hosts."""
 
     drownErrors: bool
