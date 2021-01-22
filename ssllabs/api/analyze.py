@@ -1,6 +1,5 @@
 from dacite import from_dict
 
-from ..data.endpoint import EndpointData
 from ..data.host import HostData
 from ._api import _Api
 
@@ -33,5 +32,4 @@ class Analyze(_Api):
                              cached report is returned.
         """
         r = await self._call("analyze", host=host, **kwargs)
-        data = from_dict(data_class=HostData, data=r.json())
-        return data
+        return from_dict(data_class=HostData, data=r.json())
