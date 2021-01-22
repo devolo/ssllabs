@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-# from typing import List
+from typing import List
+
+from .endpoint_details import EndpointDetails
 
 
 @dataclass
@@ -53,7 +55,7 @@ class EndpointData:
     delegation: int
     """Indicates domain name delegation with and without the www prefix"""
 
-    # details: List[EndpointDetailsData]  # This is just a reminder
+    details: List[EndpointDetails]
     """
     This field contains an EndpointDetails object. It's not present by default, but can be enabled by using the "all"
     parameter to the analyze API call.
