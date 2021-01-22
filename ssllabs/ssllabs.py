@@ -12,5 +12,7 @@ class Ssllabs():
         while not ready:
             host_object = await api.get(host=host)
             ready = host_object.status == "READY"
+            if ready:
+                break
             await asyncio.sleep(10)
         return host_object
