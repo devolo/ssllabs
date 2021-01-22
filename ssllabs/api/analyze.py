@@ -1,7 +1,7 @@
 from ..data.endpoint import EndpointData
 from ..data.host import HostData
 from ._api import _Api
-
+from dacite import from_dict
 
 class Analyze(_Api):
     """Invoke assessment and check progress.
@@ -31,7 +31,7 @@ class Analyze(_Api):
                              cached report is returned.
         """
         r = await self._call("analyze", host=host, **kwargs)
-        json = r.json()
-        if json["status"] == "READY":
-            json["endpoints"] = [EndpointData(**x) for x in r.json()["endpoints"]]
-        return HostData(**json)
+        data = from_dict(data_class=HostData, data=r.json())
+        # if json["status"] == "READY":
+        #     json["endpoints"] = [EndpointData(**x) for x in r.json()["endpoints"]]
+        return data
