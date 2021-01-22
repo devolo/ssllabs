@@ -32,5 +32,6 @@ class Analyze(_Api):
         """
         r = await self._call("analyze", host=host, **kwargs)
         json = r.json()
-        json["endpoints"] = [EndpointData(**x) for x in r.json()["endpoints"]]
+        if json["status"] == "READY":
+            json["endpoints"] = [EndpointData(**x) for x in r.json()["endpoints"]]
         return HostData(**json)
