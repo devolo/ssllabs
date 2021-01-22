@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 from .endpoint_details import EndpointDetails
@@ -20,20 +20,11 @@ class EndpointData:
     statusMessage: str
     """Assessment status message; this field will contain 'Ready' if the endpoint assessment was successful."""
 
-    statusDetails: str
-    """Code of the operation currently in progress"""
-
-    statusDetailsMessage: str
-    """Description of the operation currently in progress"""
-
     grade: str
     """Possible values: A+, A-, A-F, T (no trust) and M (certificate name mismatch)"""
 
     gradeTrustIgnored: str
     """Grade (as above), if trust issues are ignored"""
-
-    futureGrade: str
-    """Next grade because of upcoming grading criteria changes, Null if there is no impact on current grade."""
 
     hasWarnings: bool
     """If this endpoint has warnings that might affect the score (e.g., get A- instead of A)."""
@@ -49,13 +40,22 @@ class EndpointData:
     duration: int
     """Assessment duration, in milliseconds"""
 
-    eta: int
-    """Estimated time, in seconds, until the completion of the assessment"""
-
     delegation: int
     """Indicates domain name delegation with and without the www prefix"""
 
-    details: List[EndpointDetails]
+    statusDetails: str = ""
+    """Code of the operation currently in progress"""
+
+    statusDetailsMessage: str = ""
+    """Description of the operation currently in progress"""
+
+    eta: int = None
+    """Estimated time, in seconds, until the completion of the assessment"""
+
+    futureGrade: str = ""
+    """Next grade because of upcoming grading criteria changes, Null if there is no impact on current grade."""
+
+    details: List[EndpointDetails] = field(default_factory=lambda: [])
     """
     This field contains an EndpointDetails object. It's not present by default, but can be enabled by using the "all"
     parameter to the analyze API call.

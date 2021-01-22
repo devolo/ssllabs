@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 from .endpoint import EndpointData
@@ -26,14 +26,8 @@ class HostData:
     status: str
     """Assessment status; possible values: DNS, ERROR, IN_PROGRESS, and READY."""
 
-    statusMessage: str
-    """Status message in English. When status is ERROR, this field will contain an error message."""
-
     startTime: int
     """Assessment starting time, in milliseconds since 1970"""
-
-    testTime: int
-    """Assessment completion time, in milliseconds since 1970"""
 
     engineVersion: str
     """Assessment engine version (e.g., '1.26.5')"""
@@ -41,20 +35,26 @@ class HostData:
     criteriaVersion: str
     """Grading criteria version (e.g., '2009l')"""
 
-    cacheExpiryTime: str
+    statusMessage: str = ""
+    """Status message in English. When status is ERROR, this field will contain an error message."""
+
+    testTime: int = 0
+    """Assessment completion time, in milliseconds since 1970"""
+
+    cacheExpiryTime: str = ""
     """
     When will the assessment results expire from the cache (typically set only for assessment with errors; otherwise the
     results stay in the cache for as long as there's sufficient room)
     """
 
-    certHostnames: List[str]
+    certHostnames: List[str] = field(default_factory=lambda: [])
     """
     The list of certificate hostnames collected from the certificates seen during assessment. The hostnames may not be valid.
     This field is available only if the server certificate doesn't match the requested hostname. In that case, this field
     saves you some time as you don't have to inspect the certificates yourself to find out what valid hostnames might be.
     """
 
-    endpoints: List[EndpointData]
+    endpoints: List[EndpointData] = field(default_factory=lambda: [])
     """List of Endpoint objects"""
 
     # certs: List[CertData]
