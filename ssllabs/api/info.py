@@ -9,6 +9,7 @@ class Info(_Api):
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#check-ssl-labs-availability
     """
+
     async def get(self) -> InfoData:
         """Get information."""
         r = await self._call("info")

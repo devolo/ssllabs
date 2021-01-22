@@ -10,6 +10,7 @@ class Analyze(_Api):
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#invoke-assessment-and-check-progress
     """
+
     async def get(self, host: str, **kwargs) -> HostData:
         """Analyze host.
 

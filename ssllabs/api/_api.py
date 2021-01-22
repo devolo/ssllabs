@@ -9,6 +9,7 @@ SSLLABS_URL = f"https://api.ssllabs.com/api/v{API_VERSION}/"
 
 
 class _Api(ABC):
+
     def __init__(self):
         self.logger = logging.getLogger()
         self.client = httpx.AsyncClient()
@@ -18,5 +19,4 @@ class _Api(ABC):
         loop.create_task(self.client.aclose())
 
     async def _call(self, api_endpoint: str, **kwargs):
-        return await self.client.get(f"{SSLLABS_URL}{api_endpoint}",
-                                     params=kwargs)
+        return await self.client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)

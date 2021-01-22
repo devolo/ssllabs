@@ -4,6 +4,7 @@ from .api.analyze import Analyze
 
 
 class Ssllabs():
+
     async def analyze(self, host: str):
         api = Analyze()
         ready = False
