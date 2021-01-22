@@ -18,4 +18,5 @@ class _Api(ABC):
         loop.create_task(self.client.aclose())
 
     async def _call(self, api_endpoint: str, **kwargs):
-        return await self.client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
+        return await self.client.get(f"{SSLLABS_URL}{api_endpoint}",
+                                     params=kwargs)

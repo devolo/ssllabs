@@ -17,13 +17,13 @@ class EndpointDetails:
 
     #certChains: List[]
     """Server Certificate chains"""
-    
+
     #protocols: List[]
     """Supported protocols"""
-    
+
     #suites: List[]
     """Supported cipher suites per protocol"""
-    
+
     #noSniSuites:
     """Cipher suites observed only with client that does not support Server Name Indication (SNI)."""
 
@@ -117,7 +117,7 @@ class EndpointDetails:
     #sims:
     """Instance of SimDetails."""
 
-    heartbleed: bool 
+    heartbleed: bool
     """True if the server is vulnerable to the Heartbleed attack."""
 
     heartbeat: bool
@@ -183,13 +183,13 @@ class EndpointDetails:
     chaCha20Preference: bool
     """True if the server takes into account client preferences when deciding if to use ChaCha20 suites. Will be deprecated in new version."""
 
-    #hstsPolicy: 
+    #hstsPolicy:
     """Server's HSTS policy. Experimental."""
 
     #hstsPreloads: List[]
     """Information about preloaded HSTS policies."""
 
-    #hpkpPolicy: 
+    #hpkpPolicy:
     """Server's HPKP policy."""
 
     #hpkpRoPolicy:
