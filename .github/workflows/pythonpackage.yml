@@ -37,18 +37,18 @@ jobs:
       run: |
         pip install pylint
         pip install -e .
-        pylint --errors-only --score=n devolo_home_control_api
-        pylint --exit-zero --score=n --disable=C,E,R --enable=useless-suppression devolo_home_control_api
+        pylint --errors-only --score=n ssllabs
+        pylint --exit-zero --score=n --disable=C,E,R --enable=useless-suppression ssllabs
     - name: Lint with mypy
       run: |
         pip install mypy
-        mypy --ignore-missing-imports devolo_home_control_api
+        mypy --ignore-missing-imports ssllabs
   test:
     name: Test with Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9]
     steps:
     - name: Checkout sources
       uses: actions/checkout@v2
@@ -62,7 +62,7 @@ jobs:
         pip install -e .[test]
     - name: Test with pytest
       run: |
-        pytest --cov=devolo_home_control_api
+        pytest --cov=ssllabs
     - name: Preserve coverage
       uses: actions/upload-artifact@v2
       with:
