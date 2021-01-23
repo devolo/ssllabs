@@ -1,17 +1,17 @@
 from dataclasses import dataclass
 from typing import List
 
-from .named_group import NamedGroup
+from .named_group import NamedGroupData
 
 
 @dataclass
-class NamedGroups:
+class NamedGroupsData:
     """Dataclass for NamedGroup object lists.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#namedgroups
     """
 
-    list: List[NamedGroup]
+    list: List[NamedGroupData]
     """An array of NamedGroup objects"""
 
     preference: bool

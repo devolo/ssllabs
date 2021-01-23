@@ -2,14 +2,15 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 from .certificate_chain import CertificateChainData
-from .hpkp_policy import HpkpPolicy
-from .hsts_policy import HstsPolicy
-from .hsts_preload import HstsPreload
-from .http_transaction import HttpTransaction
-from .named_groups import NamedGroups
+from .drown_hosts import DrownHostsData
+from .hpkp_policy import HpkpPolicyData
+from .hsts_policy import HstsPolicyData
+from .hsts_preload import HstsPreloadData
+from .http_transaction import HttpTransactionData
+from .named_groups import NamedGroupsData
 from .protocol import ProtocolData
-from .sim_details import SimDetails
-from .static_pkp_policy import StaticPkpPolicy
+from .sim_details import SimDetailsData
+from .static_pkp_policy import StaticPkpPolicyData
 from .suite import SuiteData
 
 
@@ -38,7 +39,7 @@ class EndpointDetailsData:
     noSniSuites: SuiteData
     """Cipher suites observed only with client that does not support Server Name Indication (SNI)."""
 
-    namedGroups: NamedGroups
+    namedGroups: NamedGroupsData
     """Instance of NamedGroups object."""
 
     serverSignature: str
@@ -125,7 +126,7 @@ class EndpointDetailsData:
     miscIntolerance: int
     """Indicates various other types of intolerance"""
 
-    sims: SimDetails
+    sims: SimDetailsData
     """Instance of SimDetails."""
 
     heartbleed: bool
@@ -197,25 +198,25 @@ class EndpointDetailsData:
     new version.
     """
 
-    hstsPolicy: HstsPolicy
+    hstsPolicy: HstsPolicyData
     """Server's HSTS policy. Experimental."""
 
-    hstsPreloads: List[HstsPreload]
+    hstsPreloads: List[HstsPreloadData]
     """Information about preloaded HSTS policies."""
 
-    hpkpPolicy: HpkpPolicy
+    hpkpPolicy: HpkpPolicyData
     """Server's HPKP policy."""
 
-    hpkpRoPolicy: HpkpPolicy
+    hpkpRoPolicy: HpkpPolicyData
     """Server's HPKP-RO policy."""
 
-    staticPkpPolicy: StaticPkpPolicy
+    staticPkpPolicy: StaticPkpPolicyData
     """Server's SPKP policy."""
 
-    httpTransactions: List[HttpTransaction]
+    httpTransactions: List[HttpTransactionData]
     """An array of HttpTransaction objects."""
 
-    # drownHosts: List[]
+    drownHosts: List[DrownHostsData]
     """List of DROWN hosts."""
 
     drownErrors: bool

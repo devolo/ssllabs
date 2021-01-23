@@ -26,7 +26,7 @@ class EndpointData:
     statusDetailsMessage: Optional[str]
     """Description of the operation currently in progress"""
 
-    grade: str
+    grade: Optional[str]
     """Possible values: A+, A-, A-F, T (no trust) and M (certificate name mismatch)"""
 
     gradeTrustIgnored: str

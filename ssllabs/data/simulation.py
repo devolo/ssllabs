@@ -1,17 +1,17 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from .sim_client import SimClient
+from .sim_client import SimClientData
 
 
 @dataclass
-class Simulation:
+class SimulationData:
     """Dataclass for Simulation objects.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#simulation
     """
 
-    client: SimClient
+    client: SimClientData
     """Instance of SimClient."""
 
     errorCode: int

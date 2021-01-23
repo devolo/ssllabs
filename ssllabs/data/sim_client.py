@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class SimClient:
+class SimClientData:
     """Dataclass for Simulation Client objects.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#simclient

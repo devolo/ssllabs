@@ -3,7 +3,7 @@ from typing import List, Optional
 
 
 @dataclass
-class StaticPkpPolicy:
+class StaticPkpPolicyData:
     """Dataclass for SPKP Policy objects.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#staticpkppolicy

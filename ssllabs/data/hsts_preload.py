@@ -3,7 +3,7 @@ from typing import Optional
 
 
 @dataclass
-class HstsPreload:
+class HstsPreloadData:
     """Dataclass for HSTS Preload objects.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#hstspreload

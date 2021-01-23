@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
+from .cert import CertData
 from .endpoint import EndpointData
 
 
@@ -54,10 +55,10 @@ class HostData:
     saves you some time as you don't have to inspect the certificates yourself to find out what valid hostnames might be.
     """
 
-    endpoints: List[EndpointData]
+    endpoints: Optional[List[EndpointData]]
     """List of Endpoint objects"""
 
-    # certs: List[CertData]
+    certs: Optional[List[CertData]]
     """
     A list of Cert object, representing the chain certificates in the order in which they were retrieved from the server.
     """

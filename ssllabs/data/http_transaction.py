@@ -3,7 +3,7 @@ from typing import List
 
 
 @dataclass
-class HttpTransaction:
+class HttpTransactionData:
     """Dataclass for HTTP Transaction objects.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#httptransaction

@@ -3,7 +3,7 @@ from typing import List, Optional
 
 
 @dataclass
-class HpkpPolicy:
+class HpkpPolicyData:
     """Dataclass for HPKP Policy objects.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#hpkppolicy

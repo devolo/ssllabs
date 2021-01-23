@@ -1,15 +1,15 @@
 from dataclasses import dataclass
 from typing import List
 
-from .simulation import Simulation
+from .simulation import SimulationData
 
 
 @dataclass
-class SimDetails:
+class SimDetailsData:
     """Dataclass for Simulation object lists.
 
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#simdetails
     """
 
-    results: List[Simulation]
+    results: List[SimulationData]
     """Instances of Simulation."""
