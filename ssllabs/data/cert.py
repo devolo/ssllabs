@@ -97,6 +97,6 @@ class CertData:
 
     keyKnownDebianInsecure: bool
     """True if debian flaw is found, else false"""
-    
+
     raw: str
     """PEM-encoded certificate"""
