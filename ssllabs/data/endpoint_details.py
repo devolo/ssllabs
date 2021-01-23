@@ -2,7 +2,14 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 from .certificate_chain import CertificateChainData
+from .hpkp_policy import HpkpPolicy
+from .hsts_policy import HstsPolicy
+from .hsts_preload import HstsPreload
+from .http_transaction import HttpTransaction
+from .named_groups import NamedGroups
 from .protocol import ProtocolData
+from .sim_details import SimDetails
+from .static_pkp_policy import StaticPkpPolicy
 from .suite import SuiteData
 
 
@@ -31,7 +38,7 @@ class EndpointDetailsData:
     noSniSuites: SuiteData
     """Cipher suites observed only with client that does not support Server Name Indication (SNI)."""
 
-    # namedGroups:
+    namedGroups: NamedGroups
     """Instance of NamedGroups object."""
 
     serverSignature: str
@@ -118,7 +125,7 @@ class EndpointDetailsData:
     miscIntolerance: int
     """Indicates various other types of intolerance"""
 
-    # sims:
+    sims: SimDetails
     """Instance of SimDetails."""
 
     heartbleed: bool
@@ -157,7 +164,7 @@ class EndpointDetailsData:
     poodleTls: int
     """Results of the POODLE TLS test"""
 
-    fallbackScsv: bool
+    fallbackScsv: Optional[bool]
     """
     True if the server supports TLS_FALLBACK_SCSV, false if it doesn't. This field will not be available if the server's
     support for TLS_FALLBACK_SCSV can't be tested because it supports only one protocol version (e.g., only TLS 1.2).
@@ -169,10 +176,10 @@ class EndpointDetailsData:
     hasSct: int
     """Information about the availability of certificate transparency information (embedded SCTs)"""
 
-    dhPrimes: List[str]
+    dhPrimes: Optional[List[str]]
     """List of hex-encoded DH primes used by the server. Not present if the server doesn't support the DH key exchange."""
 
-    dhUsesKnownPrimes: int
+    dhUsesKnownPrimes: Optional[int]
     """Whether the server uses known DH primes. Not present if the server doesn't support the DH key exchange."""
 
     dhYsReuse: Optional[bool]
@@ -190,22 +197,22 @@ class EndpointDetailsData:
     new version.
     """
 
-    # hstsPolicy:
+    hstsPolicy: HstsPolicy
     """Server's HSTS policy. Experimental."""
 
-    # hstsPreloads: List[]
+    hstsPreloads: List[HstsPreload]
     """Information about preloaded HSTS policies."""
 
-    # hpkpPolicy:
+    hpkpPolicy: HpkpPolicy
     """Server's HPKP policy."""
 
-    # hpkpRoPolicy:
+    hpkpRoPolicy: HpkpPolicy
     """Server's HPKP-RO policy."""
 
-    # staticPkpPolicy:
+    staticPkpPolicy: StaticPkpPolicy
     """Server's SPKP policy."""
 
-    # httpTransactions: List[]
+    httpTransactions: List[HttpTransaction]
     """An array of HttpTransaction objects."""
 
     # drownHosts: List[]
@@ -217,7 +224,7 @@ class EndpointDetailsData:
     drownVulnerable: bool
     """True if server vulnerable to the DROWN attack."""
 
-    implementsTLS13MandatoryCS: bool
+    implementsTLS13MandatoryCS: Optional[bool]
     """True if server supports mandatory TLS 1.3 cipher suite (TLS_AES_128_GCM_SHA256), null if TLS 1.3 not supported."""
 
     zeroRTTEnabled: Optional[int]
