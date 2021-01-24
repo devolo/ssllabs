@@ -35,8 +35,9 @@ class Ssllabs():
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-usage
         """
         api = Analyze()
-        host_object = await api.get(host=host)
+        host_object = await api.get(host=host, startNew="on")
         while host_object.status not in ["READY", "ERROR"]:
+            self.logger.debug("Analyzing %s", host)
             await asyncio.sleep(10)
-            host_object = await api.get(host=host)
+            host_object = await api.get(host=host, all="done")
         return host_object
