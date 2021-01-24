@@ -70,10 +70,10 @@ class Ssllabs():
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#retrieve-root-certificates
         """
         if not 1 <= trust_store <= 5:
-            raise ValueError("""Trust store not found. Please choose on of the following: 
+            raise ValueError("""Trust store not found. Please choose on of the following:
             1-Mozilla, 2-Apple MacOS, 3-Android, 4-Java, 5-Windows""")
         api = RootCertsRaw()
-        return await api.get(trustStore = trust_store)
+        return await api.get(trustStore=trust_store)
 
     async def status_codes(self) -> StatusCodesData:
         """
