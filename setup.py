@@ -46,7 +46,9 @@ setup(
             "pre-commit",
         ],
         "test": [
+            "asynctest;python_version<'3.8'",
             "pytest",
+            "pytest-asyncio",
             "pytest-cov",
             "pytest-mock",
         ],
