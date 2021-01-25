@@ -4,7 +4,7 @@ import pytest
 from dacite import from_dict
 
 from ssllabs.data.status_codes import StatusCodesData
-from ssllabs.ssllabs import Ssllabs
+from ssllabs import Ssllabs
 
 
 class TestSsllabs:
