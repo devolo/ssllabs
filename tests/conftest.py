@@ -11,8 +11,6 @@ try:
 except ImportError:
     from asynctest import CoroutineMock as AsyncMock
 
-import json
-
 
 @pytest.fixture(autouse=True, scope="class")
 def test_data_fixture(request):

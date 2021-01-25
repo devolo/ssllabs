@@ -1,14 +1,8 @@
-from unittest.mock import patch
+import json
 
 import pytest
 
 from ssllabs.api.status_codes import StatusCodes
-
-try:
-    from unittest.mock import AsyncMock
-except ImportError:
-    from asynctest import CoroutineMock as AsyncMock
-import json
 
 
 class TestStatusCodes:
