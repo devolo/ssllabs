@@ -3,13 +3,15 @@ import os
 import pathlib
 from unittest.mock import patch
 
-import httpx
 import pytest
+from httpx import Response
 
 try:
     from unittest.mock import AsyncMock
 except ImportError:
     from asynctest import CoroutineMock as AsyncMock
+
+import json
 
 
 @pytest.fixture(autouse=True, scope="class")
@@ -25,6 +27,6 @@ def test_data_fixture(request):
 
 
 @pytest.fixture()
-def patch_httpx():
-    with patch('ssllabs.api._api._Api._call', new=AsyncMock(return_value=httpx._models.Response(200))):
-        return
+def patch_httpx(request):
+    with patch('ssllabs.api._api._Api._call', new=AsyncMock(return_value=Response(200, text="j"))) as resp:
+        yield resp
