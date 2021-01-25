@@ -43,9 +43,10 @@ class Ssllabs():
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-usage
         """
         api = Analyze()
-        publish = publish == "on"
-        igonreMismatch = ignore_mismatch == "on"
-        host_object = await api.get(host=host, startNew="on", publish=publish, igonreMismatch=igonreMismatch)
+        host_object = await api.get(host=host,
+                                    startNew="on",
+                                    publish="on" if publish else "off",
+                                    igonreMismatch="on" if ignore_mismatch else "off")
         while host_object.status not in ["READY", "ERROR"]:
             self.logger.debug("Analyzing %s", host)
             await asyncio.sleep(10)
