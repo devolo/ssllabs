@@ -1,11 +1,9 @@
 import shlex
 from subprocess import check_call
 
+import pkg_resources
 from setuptools import find_packages, setup
 from setuptools.command.develop import develop
-
-with open("README.md", "r") as fh:
-    long_description = fh.read()
 
 
 # Create post develop command class for hooking into the python setup process
@@ -20,13 +18,12 @@ class PostDevelopCommand(develop):
         develop.run(self)
 
 
+pkg_resources.require('setuptools>=46.4.0')
 setup(
     name="ssllabs",
-    version="0.1.0",
     author="Markus Bong, Guido Schmitz",
     author_email="m.bong@famabo.de, guido.schmitz@fedaix.de",
     description="Qualys SSL Labs API in Python",
-    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/2Fake/ssllabs",
     packages=find_packages(exclude=("tests*")),
