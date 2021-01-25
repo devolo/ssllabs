@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Dict, Optional
 
 
 @dataclass
@@ -30,6 +30,5 @@ class HstsPolicyData:
     preload: Optional[bool]
     """True if the preload directive is set; null otherwise"""
 
-    # ToDo: Check datatype of list emelements
-    directives: List
+    directives: Optional[Dict]
     """List of raw policy directives"""

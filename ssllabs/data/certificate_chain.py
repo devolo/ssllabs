@@ -11,10 +11,10 @@ class CertificateChainData:
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#certificatechain
     """
 
-    id: int
+    id: str
     """Certificate chain ID"""
 
-    certIds: List[int]
+    certIds: List[str]
     """
     List of IDs of each certificate, representing the chain certificates in the order in which they were retrieved from the
     server

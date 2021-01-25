@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import Dict, List
 
 
 @dataclass
@@ -18,8 +18,7 @@ class HttpTransactionData:
     requestLine: str
     """The entire request line as a single field"""
 
-    # ToDo: Check datatype of list emelements
-    requestHeaders: List
+    requestHeaders: List[str]
     """An array of request HTTP headers, each with name and value"""
 
     responseLine: str
@@ -28,8 +27,7 @@ class HttpTransactionData:
     responseHeadersRaw: List[str]
     """All response headers as a single field (useful if the headers are malformed)"""
 
-    # ToDo: Check datatype of list emelements
-    responseHeaders: List
+    responseHeaders: List[Dict]
     """An array of response HTTP headers, each with name and value"""
 
     fragileServer: bool

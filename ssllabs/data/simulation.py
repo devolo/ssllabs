@@ -23,7 +23,7 @@ class SimulationData:
     attempts: int
     """Always 1 with the current implementation."""
 
-    certChainId: int
+    certChainId: Optional[int]
     """ID of the certificate chain."""
 
     protocolId: int
@@ -41,16 +41,16 @@ class SimulationData:
     kxStrength: int
     """Negotiated key exchange strength, in RSA-equivalent bits."""
 
-    dhBits: int
+    dhBits: Optional[int]
     """Strength of DH params (e.g., 1024)"""
 
-    dhP: str
+    dhP: Optional[str]
     """DH params, p component"""
 
-    dhG: str
+    dhG: Optional[str]
     """DH params, g component"""
 
-    dhYs: str
+    dhYs: Optional[str]
     """DH params, Ys component"""
 
     namedGroupBits: Optional[int]

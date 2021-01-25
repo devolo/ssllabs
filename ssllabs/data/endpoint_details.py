@@ -9,9 +9,9 @@ from .hsts_preload import HstsPreloadData
 from .http_transaction import HttpTransactionData
 from .named_groups import NamedGroupsData
 from .protocol import ProtocolData
+from .protocol_suites import ProtocolSuitesData
 from .sim_details import SimDetailsData
 from .static_pkp_policy import StaticPkpPolicyData
-from .suite import SuiteData
 
 
 @dataclass
@@ -33,10 +33,10 @@ class EndpointDetailsData:
     protocols: List[ProtocolData]
     """Supported protocols"""
 
-    suites: List[SuiteData]
+    suites: List[ProtocolSuitesData]
     """Supported cipher suites per protocol"""
 
-    noSniSuites: SuiteData
+    noSniSuites: Optional[ProtocolSuitesData]
     """Cipher suites observed only with client that does not support Server Name Indication (SNI)."""
 
     namedGroups: NamedGroupsData
@@ -69,13 +69,13 @@ class EndpointDetailsData:
     supportsNpn: bool
     """True if the server supports NPN"""
 
-    npnProtocols: str
+    npnProtocols: Optional[str]
     """Space separated list of supported NPN protocols"""
 
     supportsAlpn: bool
     """True if the server supports ALPN"""
 
-    alpnProtocols: str
+    alpnProtocols: Optional[str]
     """Space separated list of supported ALPN protocols"""
 
     sessionTickets: int
@@ -87,7 +87,7 @@ class EndpointDetailsData:
     staplingRevocationStatus: int
     """Same as Cert.revocationStatus, but for the stapled OCSP response."""
 
-    staplingRevocationErrorMessage: str
+    staplingRevocationErrorMessage: Optional[str]
     """Description of the problem with the stapled OCSP response, if any."""
 
     sniRequired: bool
@@ -99,7 +99,7 @@ class EndpointDetailsData:
     lead to the same hostname. If this field is not available, that means the HTTP request failed.
     """
 
-    httpForwarding: str
+    httpForwarding: Optional[str]
     """Available on a server that responded with a redirection to some other hostname."""
 
     supportsRc4: bool

@@ -24,13 +24,13 @@ class SuiteData:
     kxStrength: int
     """Key exchange strength, in RSA-equivalent bits"""
 
-    dhP: str
+    dhP: Optional[str]
     """DH params, p component"""
 
-    dhG: str
+    dhG: Optional[str]
     """DH params, g component"""
 
-    dhYs: str
+    dhYs: Optional[str]
     """DH params, Ys component"""
 
     namedGroupBits: int
