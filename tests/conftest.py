@@ -28,5 +28,5 @@ def test_data_fixture(request):
 
 @pytest.fixture()
 def patch_httpx(request):
-    with patch('ssllabs.api._api._Api._call', new=AsyncMock(return_value=Response(200, text="j"))) as resp:
+    with patch('ssllabs.api._api._Api._call', new=AsyncMock(return_value=Response(200))) as resp:
         yield resp
