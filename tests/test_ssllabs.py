@@ -3,8 +3,8 @@ from unittest.mock import patch
 import pytest
 from dacite import from_dict
 
-from ssllabs.data.status_codes import StatusCodesData
 from ssllabs import Ssllabs
+from ssllabs.data.status_codes import StatusCodesData
 
 try:
     from unittest.mock import AsyncMock
