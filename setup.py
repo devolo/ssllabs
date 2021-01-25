@@ -4,8 +4,6 @@ from subprocess import check_call
 from setuptools import find_packages, setup
 from setuptools.command.develop import develop
 
-from ssllabs import __version__
-
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
@@ -24,7 +22,7 @@ class PostDevelopCommand(develop):
 
 setup(
     name="ssllabs",
-    version=__version__,
+    version="0.1.0",
     author="Markus Bong, Guido Schmitz",
     author_email="m.bong@famabo.de, guido.schmitz@fedaix.de",
     description="Qualys SSL Labs API in Python",
