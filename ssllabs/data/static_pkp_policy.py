@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 
 @dataclass
@@ -15,24 +15,20 @@ class StaticPkpPolicyData:
     error: Optional[str]
     """Error message, when the policy is invalid"""
 
-    includeSubDomains: bool
+    includeSubDomains: Optional[bool]
     """True if the includeSubDomains directive is set else false"""
 
-    reportUri: str
+    reportUri: Optional[str]
     """The report-uri value from the policy"""
 
-    # ToDo: Check datatype of list emelements
-    pins: List
+    pins: List[Dict]
     """List of all pins used by the policy"""
 
-    # ToDo: Check datatype of list emelements
-    matchedPins: List
+    matchedPins: List[Dict]
     """List of pins that match the current configuration"""
 
-    # ToDo: Check datatype of list emelements
-    forbiddenPins: List
+    forbiddenPins: List[Dict]
     """List of all forbidden pins used by policy"""
 
-    # ToDo: Check datatype of list emelements
-    matchedForbiddenPins: List
+    matchedForbiddenPins: List[Dict]
     """List of forbidden pins that match the current configuration"""

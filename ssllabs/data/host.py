@@ -42,7 +42,7 @@ class HostData:
     criteriaVersion: str
     """Grading criteria version (e.g., '2009l')"""
 
-    cacheExpiryTime: Optional[str]
+    cacheExpiryTime: Optional[int]
     """
     When will the assessment results expire from the cache (typically set only for assessment with errors; otherwise the
     results stay in the cache for as long as there's sufficient room)

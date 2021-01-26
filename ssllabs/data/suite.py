@@ -18,28 +18,28 @@ class SuiteData:
     cipherStrength: int
     """Suite strength (e.g., 128)"""
 
-    kxType: str
+    kxType: Optional[str]
     """Key exchange type (e.g., ECDH)"""
 
-    kxStrength: int
+    kxStrength: Optional[int]
     """Key exchange strength, in RSA-equivalent bits"""
 
-    dhP: Optional[str]
+    dhP: Optional[int]
     """DH params, p component"""
 
-    dhG: Optional[str]
+    dhG: Optional[int]
     """DH params, g component"""
 
-    dhYs: Optional[str]
+    dhYs: Optional[int]
     """DH params, Ys component"""
 
-    namedGroupBits: int
+    namedGroupBits: Optional[int]
     """EC bits"""
 
-    namedGroupId: int
+    namedGroupId: Optional[int]
     """EC curve ID"""
 
-    namedGroupName: str
+    namedGroupName: Optional[str]
     """EC curve name"""
 
     q: Optional[int]

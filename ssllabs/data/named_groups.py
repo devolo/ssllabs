@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 from .named_group import NamedGroupData
 
@@ -14,5 +14,5 @@ class NamedGroupsData:
     list: List[NamedGroupData]
     """An array of NamedGroup objects"""
 
-    preference: bool
+    preference: Optional[bool]
     """True if the server has preferred curves that it uses first"""

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 
 @dataclass
@@ -18,23 +18,20 @@ class HpkpPolicyData:
     error: Optional[str]
     """Error message, when the policy is invalid"""
 
-    maxAge: int
+    maxAge: Optional[int]
     """The max-age value from the policy"""
 
     includeSubDomains: Optional[bool]
     """True if the includeSubDomains directive is set; null otherwise"""
 
-    reportUri: str
+    reportUri: Optional[str]
     """The report-uri value from the policy"""
 
-    # ToDo: Check datatype of list emelements
-    pins: List
+    pins: List[Dict]
     """List of all pins used by the policy"""
 
-    # ToDo: Check datatype of list emelements
-    matchedPins: List
+    matchedPins: List[Dict]
     """List of pins that match the current configuration"""
 
-    # ToDo: Check datatype of list emelements
-    directives: List
+    directives: List[Dict]
     """List of raw policy directives (name-value pairs)"""

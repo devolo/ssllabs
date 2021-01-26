@@ -11,7 +11,7 @@ class CertData:
     See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#cert
     """
 
-    id: int
+    id: str
     """Certificate ID"""
 
     subject: str
@@ -23,7 +23,7 @@ class CertData:
     commonNames: List[str]
     """Common names extracted from the subject"""
 
-    altNames: List[str]
+    altNames: Optional[List[str]]
     """Alternative names"""
 
     notBefore: int
@@ -41,10 +41,10 @@ class CertData:
     revocationInfo: int
     """A number that represents revocation information present in the certificate"""
 
-    crlURIs: List[str]
+    crlURIs: Optional[List[str]]
     """CRL URIs extracted from the certificate"""
 
-    ocspURIs: List[str]
+    ocspURIs: Optional[List[str]]
     """OCSP URIs extracted from the certificate"""
 
     revocationStatus: int
@@ -56,7 +56,7 @@ class CertData:
     ocspRevocationStatus: int
     """Same as revocationStatus, but only for the OCSP information (if any)."""
 
-    dnsCaa: bool
+    dnsCaa: Optional[bool]
     """True if CAA is supported else false."""
 
     caaPolicy: Optional[CaaPolicyData]
@@ -71,7 +71,7 @@ class CertData:
     validationType: Optional[str]
     """E for Extended Validation certificates"""
 
-    issues: int
+    issues: Optional[int]
     """list of certificate issues, one bit per issue"""
 
     sct: bool
@@ -95,7 +95,7 @@ class CertData:
     keyStrength: int
     """Key strength, in equivalent RSA bits"""
 
-    keyKnownDebianInsecure: bool
+    keyKnownDebianInsecure: Optional[bool]
     """True if debian flaw is found, else false"""
 
     raw: str

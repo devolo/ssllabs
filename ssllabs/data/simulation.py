@@ -23,34 +23,34 @@ class SimulationData:
     attempts: int
     """Always 1 with the current implementation."""
 
-    certChainId: Optional[int]
+    certChainId: Optional[str]
     """ID of the certificate chain."""
 
-    protocolId: int
+    protocolId: Optional[int]
     """Negotiated protocol ID."""
 
-    suiteId: int
+    suiteId: Optional[int]
     """Negotiated suite ID."""
 
-    suiteName: str
+    suiteName: Optional[str]
     """Negotiated suite Name."""
 
-    kxType: str
+    kxType: Optional[str]
     """Negotiated key exchange, for example 'ECDH'."""
 
-    kxStrength: int
+    kxStrength: Optional[int]
     """Negotiated key exchange strength, in RSA-equivalent bits."""
 
     dhBits: Optional[int]
     """Strength of DH params (e.g., 1024)"""
 
-    dhP: Optional[str]
+    dhP: Optional[int]
     """DH params, p component"""
 
-    dhG: Optional[str]
+    dhG: Optional[int]
     """DH params, g component"""
 
-    dhYs: Optional[str]
+    dhYs: Optional[int]
     """DH params, Ys component"""
 
     namedGroupBits: Optional[int]
@@ -62,11 +62,11 @@ class SimulationData:
     namedGroupName: Optional[str]
     """When ECDHE is negotiated, EC curve nanme (e.g., 'secp256r1')."""
 
-    keyAlg: str
+    keyAlg: Optional[str]
     """Connection certificate key algorithsm (e.g., 'RSA')."""
 
-    keySize: int
+    keySize: Optional[int]
     """Connection certificate key size (e.g., 2048)."""
 
-    sigAlg: str
+    sigAlg: Optional[str]
     """Connection certificate signature algorithm (e.g, 'SHA256withRSA')."""

@@ -33,16 +33,16 @@ class EndpointDetailsData:
     protocols: List[ProtocolData]
     """Supported protocols"""
 
-    suites: List[ProtocolSuitesData]
+    suites: Optional[List[ProtocolSuitesData]]
     """Supported cipher suites per protocol"""
 
     noSniSuites: Optional[ProtocolSuitesData]
     """Cipher suites observed only with client that does not support Server Name Indication (SNI)."""
 
-    namedGroups: NamedGroupsData
+    namedGroups: Optional[NamedGroupsData]
     """Instance of NamedGroups object."""
 
-    serverSignature: str
+    serverSignature: Optional[str]
     """
     Contents of the HTTP Server response header when known. This field could be absent for one of two reasons: 1) the HTTP
     request failed (check httpStatusCode) or 2) there was no Server response header returned.
@@ -54,46 +54,46 @@ class EndpointDetailsData:
     nonPrefixDelegation: bool
     """True if this endpoint is reachable via a hostname without the www prefix"""
 
-    vulnBeast: bool
+    vulnBeast: Optional[bool]
     """True if the endpoint is vulnerable to the BEAST attack"""
 
-    renegSupport: int
+    renegSupport: Optional[int]
     """This is an integer value that describes the endpoint support for renegotiation."""
 
-    sessionResumption: int
+    sessionResumption: Optional[int]
     """This is an integer value that describes endpoint support for session resumption."""
 
-    compressionMethods: int
+    compressionMethods: Optional[int]
     """Integer value that describes supported compression methods"""
 
-    supportsNpn: bool
+    supportsNpn: Optional[bool]
     """True if the server supports NPN"""
 
     npnProtocols: Optional[str]
     """Space separated list of supported NPN protocols"""
 
-    supportsAlpn: bool
+    supportsAlpn: Optional[bool]
     """True if the server supports ALPN"""
 
     alpnProtocols: Optional[str]
     """Space separated list of supported ALPN protocols"""
 
-    sessionTickets: int
+    sessionTickets: Optional[int]
     """Indicates support for Session Tickets"""
 
-    ocspStapling: bool
+    ocspStapling: Optional[bool]
     """True if OCSP stapling is deployed on the server"""
 
-    staplingRevocationStatus: int
+    staplingRevocationStatus: Optional[int]
     """Same as Cert.revocationStatus, but for the stapled OCSP response."""
 
     staplingRevocationErrorMessage: Optional[str]
     """Description of the problem with the stapled OCSP response, if any."""
 
-    sniRequired: bool
+    sniRequired: Optional[bool]
     """If SNI support is required to access the web site."""
 
-    httpStatusCode: int
+    httpStatusCode: Optional[int]
     """
     Status code of the final HTTP response seen. When submitting HTTP requests, redirections are followed, but only if they
     lead to the same hostname. If this field is not available, that means the HTTP request failed.
@@ -102,67 +102,67 @@ class EndpointDetailsData:
     httpForwarding: Optional[str]
     """Available on a server that responded with a redirection to some other hostname."""
 
-    supportsRc4: bool
+    supportsRc4: Optional[bool]
     """True if the server supports at least one RC4 suite."""
 
-    rc4WithModern: bool
+    rc4WithModern: Optional[bool]
     """True if RC4 is used with modern clients."""
 
-    rc4Only: bool
+    rc4Only: Optional[bool]
     """True if only RC4 suites are supported."""
 
-    forwardSecrecy: int
+    forwardSecrecy: Optional[int]
     """Indicates support for Forward Secrecy"""
 
-    supportsAead: bool
+    supportsAead: Optional[bool]
     """True if the server supports at least one AEAD suite."""
 
-    supportsCBC: bool
+    supportsCBC: Optional[bool]
     """True if the server supports at least one CBC suite."""
 
-    protocolIntolerance: int
+    protocolIntolerance: Optional[int]
     """Indicates protocol version intolerance issues"""
 
-    miscIntolerance: int
+    miscIntolerance: Optional[int]
     """Indicates various other types of intolerance"""
 
-    sims: SimDetailsData
+    sims: Optional[SimDetailsData]
     """Instance of SimDetails."""
 
-    heartbleed: bool
+    heartbleed: Optional[bool]
     """True if the server is vulnerable to the Heartbleed attack."""
 
-    heartbeat: bool
+    heartbeat: Optional[bool]
     """True if the server supports the Heartbeat extension."""
 
-    openSslCcs: int
+    openSslCcs: Optional[int]
     """Results of the CVE-2014-0224 test"""
 
-    openSSLLuckyMinus20: int
+    openSSLLuckyMinus20: Optional[int]
     """Results of the CVE-2016-2107 test"""
 
-    ticketbleed: int
+    ticketbleed: Optional[int]
     """Results of the ticketbleed CVE-2016-9244 test"""
 
-    bleichenbacher: int
+    bleichenbacher: Optional[int]
     """Results of the Return Of Bleichenbacher's Oracle Threat (ROBOT) test"""
 
-    zombiePoodle: int
+    zombiePoodle: Optional[int]
     """Results of the Zombie POODLE test"""
 
-    goldenDoodle: int
+    goldenDoodle: Optional[int]
     """Results of the GOLDENDOODLE test"""
 
-    zeroLengthPaddingOracle: int
+    zeroLengthPaddingOracle: Optional[int]
     """Results of the 0-Length Padding Oracle (CVE-2019-1559) test"""
 
-    sleepingPoodle: int
+    sleepingPoodle: Optional[int]
     """Results of the Sleeping POODLE test"""
 
-    poodle: bool
+    poodle: Optional[bool]
     """True if the endpoint is vulnerable to POODLE"""
 
-    poodleTls: int
+    poodleTls: Optional[int]
     """Results of the POODLE TLS test"""
 
     fallbackScsv: Optional[bool]
@@ -171,10 +171,10 @@ class EndpointDetailsData:
     support for TLS_FALLBACK_SCSV can't be tested because it supports only one protocol version (e.g., only TLS 1.2).
     """
 
-    freak: bool
+    freak: Optional[bool]
     """True if the server is vulnerable to the FREAK attack, meaning it supports 512-bit key exchange."""
 
-    hasSct: int
+    hasSct: Optional[int]
     """Information about the availability of certificate transparency information (embedded SCTs)"""
 
     dhPrimes: Optional[List[str]]
@@ -186,43 +186,43 @@ class EndpointDetailsData:
     dhYsReuse: Optional[bool]
     """True if the DH ephemeral server value is reused. Not present if the server doesn't support the DH key exchange."""
 
-    ecdhParameterReuse: bool
+    ecdhParameterReuse: Optional[bool]
     """True if the server reuses its ECDHE values"""
 
-    logjam: bool
+    logjam: Optional[bool]
     """True if the server uses DH parameters weaker than 1024 bits."""
 
-    chaCha20Preference: bool
+    chaCha20Preference: Optional[bool]
     """
     True if the server takes into account client preferences when deciding if to use ChaCha20 suites. Will be deprecated in
     new version.
     """
 
-    hstsPolicy: HstsPolicyData
+    hstsPolicy: Optional[HstsPolicyData]
     """Server's HSTS policy. Experimental."""
 
-    hstsPreloads: List[HstsPreloadData]
+    hstsPreloads: Optional[List[HstsPreloadData]]
     """Information about preloaded HSTS policies."""
 
-    hpkpPolicy: HpkpPolicyData
+    hpkpPolicy: Optional[HpkpPolicyData]
     """Server's HPKP policy."""
 
-    hpkpRoPolicy: HpkpPolicyData
+    hpkpRoPolicy: Optional[HpkpPolicyData]
     """Server's HPKP-RO policy."""
 
-    staticPkpPolicy: StaticPkpPolicyData
+    staticPkpPolicy: Optional[StaticPkpPolicyData]
     """Server's SPKP policy."""
 
-    httpTransactions: List[HttpTransactionData]
+    httpTransactions: Optional[List[HttpTransactionData]]
     """An array of HttpTransaction objects."""
 
-    drownHosts: List[DrownHostsData]
+    drownHosts: Optional[List[DrownHostsData]]
     """List of DROWN hosts."""
 
-    drownErrors: bool
+    drownErrors: Optional[bool]
     """True if error occurred in the DROWN test."""
 
-    drownVulnerable: bool
+    drownVulnerable: Optional[bool]
     """True if server vulnerable to the DROWN attack."""
 
     implementsTLS13MandatoryCS: Optional[bool]
