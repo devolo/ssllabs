@@ -19,7 +19,7 @@ class _Api(ABC):
         loop = asyncio.get_event_loop()
         loop.create_task(self.client.aclose())
 
-    async def _call(self, api_endpoint: str, **kwargs):
+    async def _call(self, api_endpoint: str, **kwargs) -> httpx.Response:
         """Invocate API."""
         r = await self.client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
         r.raise_for_status()
