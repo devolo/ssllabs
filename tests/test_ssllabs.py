@@ -30,7 +30,7 @@ class TestSsllabs:
 
     @pytest.mark.asyncio
     async def test_analyze_not_ready_yet(self, request, mocker):
-        with patch("asyncio.sleep"), \
+        with patch("asyncio.sleep", new=AsyncMock()), \
              patch("ssllabs.api.analyze.Analyze.get",
                    new=AsyncMock(side_effect=[
                        from_dict(data_class=HostData,
