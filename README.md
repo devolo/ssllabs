@@ -1,6 +1,6 @@
 # ssllabs
 
-This project implements the [Qualys SSL Labs](https://www.ssllabs.com/ssltest/) API in python. It uses [version 3](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md). All methods are async.
+This project implements the [Qualys SSL Labs](https://www.ssllabs.com/ssltest/) API in python. It uses [API version 3](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md). All methods are async.
 
 ## System requirements
 
@@ -87,7 +87,7 @@ async def availability():
 asyncio.run(availability())
 ```
 
-This will give you True, if the servers are up and running, otherwise False. If will also report False, if you exeeded your rate limits.
+This will give you True, if the servers are up and running, otherwise False. It will also report False, if you exeeded your rate limits.
 
 ### Retrieve API information
 
@@ -103,7 +103,7 @@ async def info():
 asyncio.run(info())
 ```
 
-This will give you a [Info object](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#info) as dataclass.
+This will give you an [Info object](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#info) as dataclass.
 
 ### Retrieve root certificates
 
