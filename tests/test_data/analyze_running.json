@@ -1,0 +1,16 @@
+{
+    "host": "devolo.de",
+    "port": 443,
+    "protocol": "http",
+    "isPublic": true,
+    "status": "RUNNING",
+    "statusMessage": null,
+    "startTime": 1611214731486,
+    "testTime": 1611215255952,
+    "engineVersion": "2.1.8",
+    "criteriaVersion": "2009q",
+    "cacheExpiryTime": null,
+    "certHostnames": null,
+    "endpoints": [],
+    "certs": null
+}
