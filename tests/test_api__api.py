@@ -9,4 +9,3 @@ try:
 except ImportError:
     from asynctest import CoroutineMock as AsyncMock
 from httpx import Response
-
