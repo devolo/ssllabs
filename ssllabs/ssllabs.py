@@ -3,10 +3,7 @@ import logging
 
 from httpx import HTTPStatusError
 
-from .api.analyze import Analyze
-from .api.info import Info
-from .api.root_certs_raw import RootCertsRaw
-from .api.status_codes import StatusCodes
+from .api import Analyze, Info, RootCertsRaw, StatusCodes
 from .data.host import HostData
 from .data.info import InfoData
 from .data.status_codes import StatusCodesData
