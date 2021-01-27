@@ -18,7 +18,6 @@ class PostDevelopCommand(develop):
         develop.run(self)
 
 
-print(find_packages())
 pkg_resources.require('setuptools>=46.4.0')
 setup(
     name="ssllabs",
