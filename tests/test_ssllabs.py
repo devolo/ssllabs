@@ -19,14 +19,29 @@ except ImportError:
 # ToDo: test_analyze, test_info, and test_status_codes can be combined with parametrize
 class TestSsllabs:
 
+    API_CALLS = [("analyze.Analyze",
+                  HostData,
+                  {
+                      "host": "devolo.de"
+                  }),
+                 ("info.Info",
+                  InfoData,
+                  {}),
+                 ("status_codes.StatusCodes",
+                  StatusCodesData,
+                  {})]
+
     @pytest.mark.asyncio
-    async def test_analyze(self, request):
-        with patch("ssllabs.api.analyze.Analyze.get",
-                   new=AsyncMock(return_value=from_dict(data_class=HostData,
-                                                        data=request.cls.analyze))):
+    @pytest.mark.parametrize("api, return_data, parameters", API_CALLS)
+    async def test_combined(self, request, api, return_data, parameters):
+        call_string = api.split(".")[0]
+        with patch(f"ssllabs.api.{api}.get",
+                   new=AsyncMock(return_value=from_dict(data_class=return_data,
+                                                        data=getattr(request.cls,
+                                                                     call_string)))):
             ssllabs = Ssllabs()
-            analyze = await ssllabs.analyze(host="devolo.de")
-            assert dataclasses.asdict(analyze) == request.cls.analyze
+            x = await getattr(ssllabs, call_string)(**parameters)
+            assert dataclasses.asdict(x) == getattr(request.cls, call_string)
 
     @pytest.mark.asyncio
     async def test_analyze_not_ready_yet(self, request, mocker):
@@ -44,15 +59,6 @@ class TestSsllabs:
             assert spy.call_count == 2
 
     @pytest.mark.asyncio
-    async def test_info(self, request):
-        with patch("ssllabs.api.info.Info.get",
-                   new=AsyncMock(return_value=from_dict(data_class=InfoData,
-                                                        data=request.cls.info))):
-            ssllabs = Ssllabs()
-            info = await ssllabs.info()
-            assert dataclasses.asdict(info) == request.cls.info
-
-    @pytest.mark.asyncio
     async def test_root_certs(self, request):
         with patch("ssllabs.api.root_certs_raw.RootCertsRaw.get",
                    new=AsyncMock(return_value=request.cls.root_certs["rootCerts"])):
@@ -65,15 +71,6 @@ class TestSsllabs:
         with pytest.raises(ValueError):
             ssllabs = Ssllabs()
             await ssllabs.root_certs(trust_store=6)
-
-    @pytest.mark.asyncio
-    async def test_status_codes(self, request):
-        with patch("ssllabs.api.status_codes.StatusCodes.get",
-                   new=AsyncMock(return_value=from_dict(data_class=StatusCodesData,
-                                                        data=request.cls.status_codes))):
-            ssllabs = Ssllabs()
-            status_codes = await ssllabs.status_codes()
-            assert dataclasses.asdict(status_codes) == request.cls.status_codes
 
     @pytest.mark.asyncio
     async def test_availability(self, request):
