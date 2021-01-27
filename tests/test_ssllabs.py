@@ -44,7 +44,6 @@ class TestSsllabs:
             assert spy.call_count == 2
 
     @pytest.mark.asyncio
-    @pytest.mark.asyncio
     async def test_info(self, request):
         with patch("ssllabs.api.info.Info.get",
                    new=AsyncMock(return_value=from_dict(data_class=InfoData,
