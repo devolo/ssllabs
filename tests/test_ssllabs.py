@@ -31,16 +31,16 @@ class TestSsllabs:
                   {})]
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("api, return_data, parameters", API_CALLS)
-    async def test_combined(self, request, api, return_data, parameters):
-        call_string = api.split(".")[0]
+    @pytest.mark.parametrize("api, result, parameters", API_CALLS)
+    async def test_ssllabs(self, request, api, result, parameters):
+        call = api.split(".")[0]
         with patch(f"ssllabs.api.{api}.get",
-                   new=AsyncMock(return_value=from_dict(data_class=return_data,
+                   new=AsyncMock(return_value=from_dict(data_class=result,
                                                         data=getattr(request.cls,
-                                                                     call_string)))):
+                                                                     call)))):
             ssllabs = Ssllabs()
-            x = await getattr(ssllabs, call_string)(**parameters)
-            assert dataclasses.asdict(x) == getattr(request.cls, call_string)
+            api_data = await getattr(ssllabs, call)(**parameters)
+            assert dataclasses.asdict(api_data) == getattr(request.cls, call)
 
     @pytest.mark.asyncio
     async def test_analyze_not_ready_yet(self, request, mocker):
