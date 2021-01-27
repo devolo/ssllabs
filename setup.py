@@ -25,7 +25,7 @@ setup(
     author_email="m.bong@famabo.de, guido.schmitz@fedaix.de",
     description="Qualys SSL Labs API in Python",
     long_description_content_type="text/markdown",
-    url="https://github.com/2Fake/ssllabs",
+    url="https://github.com/devolo/ssllabs",
     packages=find_packages(exclude=("tests*")),
     classifiers=[
         "Programming Language :: Python :: 3",
