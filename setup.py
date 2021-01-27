@@ -18,6 +18,7 @@ class PostDevelopCommand(develop):
         develop.run(self)
 
 
+print(find_packages())
 pkg_resources.require('setuptools>=46.4.0')
 setup(
     name="ssllabs",
@@ -26,7 +27,8 @@ setup(
     description="Qualys SSL Labs API in Python",
     long_description_content_type="text/markdown",
     url="https://github.com/devolo/ssllabs",
-    packages=find_packages(exclude=("tests*")),
+    packages=find_packages(exclude=("tests*",
+                                    )),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
