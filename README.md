@@ -36,7 +36,7 @@ pip install ssllabs
 First, you need to get the sources.
 
 ```bash
-git clone git@github.com:2Fake/ssllabs.git
+git clone git@github.com:devolo/ssllabs.git
 ```
 
 Then you need to take care of the requirements.
