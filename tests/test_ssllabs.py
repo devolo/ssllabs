@@ -16,7 +16,6 @@ except ImportError:
     from asynctest import CoroutineMock as AsyncMock
 
 
-# ToDo: test_analyze, test_info, and test_status_codes can be combined with parametrize
 class TestSsllabs:
 
     API_CALLS = [("analyze.Analyze",
