@@ -13,7 +13,8 @@ class Ssllabs():
     """Highlevel methods to interact with the SSL Labs Assessment APIs."""
 
     def __init__(self):
-        self.logger = logging.getLogger(f"{self.__class__.__module__}.{self.__class__.__name__}")
+        self._logger = logging.getLogger(f"{self.__class__.__module__}.{self.__class__.__name__}")
+        self._semaphore = asyncio.Semaphore(1)
 
     async def availability(self) -> bool:
         """
@@ -21,17 +22,17 @@ class Ssllabs():
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#error-response-status-codes
         """
-        api = Info()
+        i = Info()
         try:
-            await api.get()
+            await i.get()
             return True
         except HTTPStatusError as ex:
-            self.logger.error(ex)
+            self._logger.error(ex)
             return False
 
     async def analyze(self, host: str, publish: bool = False, ignore_mismatch: bool = False) -> HostData:
         """
-        Test a particular host.
+        Test a particular host with respect to the cool off and the maximum number of assessments.
 
         :param host: Host to test
         :param publish: True if assessment results should be published on the public results boards
@@ -39,15 +40,29 @@ class Ssllabs():
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-usage
         """
-        api = Analyze()
-        host_object = await api.get(host=host,
-                                    startNew="on",
-                                    publish="on" if publish else "off",
-                                    igonreMismatch="on" if ignore_mismatch else "off")
+        await self._semaphore.acquire()
+        i = Info()
+        info = await i.get()
+
+        # Wait for a free slot, if all slots are in use
+        while info.currentAssessments >= info.maxAssessments:
+            await asyncio.sleep(1)
+            info = await i.get()
+
+        # If there is already an assessment running, wait the needed cool off until starting the next one
+        if info.currentAssessments != 0:
+            await asyncio.sleep(info.newAssessmentCoolOff / 1000)
+
+        a = Analyze()
+        host_object = await a.get(host=host,
+                                  startNew="on",
+                                  publish="on" if publish else "off",
+                                  igonreMismatch="on" if ignore_mismatch else "off")
+        self._semaphore.release()
         while host_object.status not in ["READY", "ERROR"]:
-            self.logger.debug("Analyzing %s", host)
+            self._logger.debug("Analyzing %s", host)
             await asyncio.sleep(10)
-            host_object = await api.get(host=host, all="done")
+            host_object = await a.get(host=host, all="done")
         return host_object
 
     async def info(self) -> InfoData:
@@ -56,8 +71,8 @@ class Ssllabs():
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#info
         """
-        api = Info()
-        return await api.get()
+        i = Info()
+        return await i.get()
 
     async def root_certs(self, trust_store: int = 1) -> str:
         """
@@ -70,8 +85,8 @@ class Ssllabs():
         if not 1 <= trust_store <= 5:
             raise ValueError("""Trust store not found. Please choose on of the following:
             1-Mozilla, 2-Apple MacOS, 3-Android, 4-Java, 5-Windows""")
-        api = RootCertsRaw()
-        return await api.get(trustStore=trust_store)
+        rcr = RootCertsRaw()
+        return await rcr.get(trustStore=trust_store)
 
     async def status_codes(self) -> StatusCodesData:
         """
@@ -79,5 +94,5 @@ class Ssllabs():
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#retrieve-known-status-codes
         """
-        api = StatusCodes()
-        return await api.get()
+        sc = StatusCodes()
+        return await sc.get()
