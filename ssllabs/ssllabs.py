@@ -14,6 +14,7 @@ class Ssllabs():
 
     def __init__(self):
         self.logger = logging.getLogger(f"{self.__class__.__module__}.{self.__class__.__name__}")
+        self._semaphore = asyncio.Semaphore(1)
 
     async def availability(self) -> bool:
         """
@@ -39,11 +40,20 @@ class Ssllabs():
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-usage
         """
+        await self._semaphore.acquire()
+
+        i = Info()
+        info = await i.get()
+        if info.currentAssessments != 0:
+            await asyncio.sleep(info.newAssessmentCoolOff / 1000)
+
         api = Analyze()
         host_object = await api.get(host=host,
                                     startNew="on",
                                     publish="on" if publish else "off",
                                     igonreMismatch="on" if ignore_mismatch else "off")
+
+        self._semaphore.release()
         while host_object.status not in ["READY", "ERROR"]:
             self.logger.debug("Analyzing %s", host)
             await asyncio.sleep(10)
