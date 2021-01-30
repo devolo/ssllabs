@@ -13,7 +13,7 @@ class Ssllabs():
     """Highlevel methods to interact with the SSL Labs Assessment APIs."""
 
     def __init__(self):
-        self._logger = logging.getLogger(f"{self.__class__.__module__}.{self.__class__.__name__}")
+        self._logger = logging.getLogger("ssllabs.Ssllabs")
         self._semaphore = asyncio.Semaphore(1)
 
     async def availability(self) -> bool:
@@ -25,6 +25,7 @@ class Ssllabs():
         i = Info()
         try:
             await i.get()
+            self._logger.info("SSL Labs servers are up an running.")
             return True
         except HTTPStatusError as ex:
             self._logger.error(ex)
@@ -41,11 +42,13 @@ class Ssllabs():
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-usage
         """
         await self._semaphore.acquire()
+        self._logger.info("Analyzing %s", host)
         i = Info()
         info = await i.get()
 
         # Wait for a free slot, if all slots are in use
         while info.currentAssessments >= info.maxAssessments:
+            self._logger.warning("Already %i assessments running. Need to wait.", info.currentAssessments)
             await asyncio.sleep(1)
             info = await i.get()
 
@@ -57,10 +60,10 @@ class Ssllabs():
         host_object = await a.get(host=host,
                                   startNew="on",
                                   publish="on" if publish else "off",
-                                  igonreMismatch="on" if ignore_mismatch else "off")
+                                  ignoreMismatch="on" if ignore_mismatch else "off")
         self._semaphore.release()
         while host_object.status not in ["READY", "ERROR"]:
-            self._logger.debug("Analyzing %s", host)
+            self._logger.debug("Assessment of %s not ready yet.", host)
             await asyncio.sleep(10)
             host_object = await a.get(host=host, all="done")
         return host_object

@@ -19,5 +19,6 @@ class Endpoint(_Api):
                         intended for API consumers that don't want to wait for assessment results. Can't be used at the same
                         time as the startNew parameter.
         """
+        self._verify_kwargs(kwargs.keys(), ["fromCache"])
         r = await self._call("getEndpointData", host=host, s=s, **kwargs)
         return from_dict(data_class=EndpointData, data=r.json())

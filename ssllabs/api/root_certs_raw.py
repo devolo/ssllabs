@@ -12,5 +12,6 @@ class RootCertsRaw(_Api):
 
         :key trustStore: 1-Mozilla(default), 2-Apple MacOS, 3-Android, 4-Java, 5-Windows
         """
+        self._verify_kwargs(kwargs.keys(), ["trustStore"])
         r = await self._call("getRootCertsRaw", **kwargs)
         return r.text
