@@ -31,5 +31,6 @@ class Analyze(_Api):
                              assessment hostname. Set to off by default. Please note that this parameter is ignored if a
                              cached report is returned.
         """
+        self._verify_kwargs(kwargs.keys(), ["publish", "startNew", "fromCache", "maxAge", "all", "ignoreMismatch"])
         r = await self._call("analyze", host=host, **kwargs)
         return from_dict(data_class=HostData, data=r.json())

@@ -1,6 +1,7 @@
 import dataclasses
 import json
 import re
+from logging import Logger
 from unittest.mock import patch
 
 import pytest
@@ -76,3 +77,9 @@ class TestApi:
         r = RootCertsRaw()
         root_certs = await r.get()
         assert type(root_certs) is str
+
+    def test_unknown_parameter(self, mocker):
+        spy = mocker.spy(Logger, "warning")
+        api = _Api()
+        api._verify_kwargs(["given"], ["known"])  # pylint: disable=protected-access
+        assert spy.call_count == 1
