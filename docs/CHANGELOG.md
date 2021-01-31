@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Query used API version with ssllabs.api.API_VERSION
+- Low level methods now can reuse an existing AsyncClient instance
 
 ## [v0.2.0] - 2021/01/28
 

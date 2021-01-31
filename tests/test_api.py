@@ -5,7 +5,7 @@ from logging import Logger
 from unittest.mock import patch
 
 import pytest
-from httpx import HTTPStatusError, Request, Response
+from httpx import AsyncClient, HTTPStatusError, Request, Response
 
 from ssllabs.api._api import _Api
 from ssllabs.api.analyze import Analyze
@@ -77,6 +77,14 @@ class TestApi:
         r = RootCertsRaw()
         root_certs = await r.get()
         assert type(root_certs) is str
+
+    @pytest.mark.asyncio
+    async def test_not_closing_client(self, mocker):
+        api = _Api()
+        api._needs_closing = False  # pylint: disable=protected-access
+        spy = mocker.spy(AsyncClient, "aclose")
+        del api
+        assert spy.call_count == 0
 
     def test_unknown_parameter(self, mocker):
         spy = mocker.spy(Logger, "warning")
