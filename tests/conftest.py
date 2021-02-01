@@ -31,7 +31,7 @@ def patch_httpx():
         yield r
 
 
-@pytest.fixture
+@pytest.fixture()
 def event_loop():
     loop = asyncio.get_event_loop()
     yield loop
