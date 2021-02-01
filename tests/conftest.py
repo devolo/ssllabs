@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 import pathlib
@@ -28,3 +29,14 @@ def test_data_fixture(request):
 def patch_httpx():
     with patch('ssllabs.api._api._Api._call', new=AsyncMock(return_value=Response(200))) as r:
         yield r
+
+
+@pytest.fixture
+def event_loop():
+    loop = asyncio.get_event_loop()
+    yield loop
+    to_cancel = asyncio.tasks.all_tasks(loop)
+    for task in to_cancel:
+        task.cancel()
+    loop.run_until_complete(asyncio.tasks.gather(*to_cancel))
+    loop.close()
