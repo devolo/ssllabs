@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from abc import ABC
-from typing import KeysView
+from typing import KeysView, Optional
 
 import httpx
 
@@ -12,13 +12,15 @@ SSLLABS_URL = f"https://api.ssllabs.com/api/v{API_VERSION}/"
 class _Api(ABC):
     """Abstract class to communicate with Qualys SSL Labs Assessment APIs."""
 
-    def __init__(self):
+    def __init__(self, client: Optional[httpx.AsyncClient] = None):
         self._logger = logging.getLogger(f"{self.__class__.__module__}.{self.__class__.__name__}")
-        self._client = httpx.AsyncClient()
+        self._client = client or httpx.AsyncClient()
+        self._needs_closing = not bool(client)
 
     def __del__(self):
-        loop = asyncio.get_event_loop()
-        loop.create_task(self._client.aclose())
+        if self._needs_closing:
+            loop = asyncio.get_event_loop()
+            loop.create_task(self._client.aclose())
 
     async def _call(self, api_endpoint: str, **kwargs) -> httpx.Response:
         """Invocate API."""
