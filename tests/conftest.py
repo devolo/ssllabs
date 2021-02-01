@@ -35,7 +35,8 @@ def patch_httpx():
 def event_loop():
     loop = asyncio.get_event_loop()
     yield loop
-    loop.run_until_complete(
-        asyncio.tasks.gather(*[task.cancel() for task in asyncio.tasks.all_tasks(loop)],
-                             return_exceptions=True))
+    to_cancel = asyncio.tasks.all_tasks(loop)
+    for task in to_cancel:
+        task.cancel()
+    loop.run_until_complete(asyncio.tasks.gather(*to_cancel, return_exceptions=True))
     loop.close()
