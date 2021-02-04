@@ -19,17 +19,12 @@ except ImportError:
 
 class TestSsllabs:
 
-    API_CALLS = [("analyze.Analyze",
-                  HostData,
-                  {
-                      "host": "devolo.de"
-                  }),
-                 ("info.Info",
-                  InfoData,
-                  {}),
-                 ("status_codes.StatusCodes",
-                  StatusCodesData,
-                  {})]
+    API_CALLS: list = [("info.Info",
+                        InfoData,
+                        {}),
+                       ("status_codes.StatusCodes",
+                        StatusCodesData,
+                        {})]
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("api, result, parameters", API_CALLS)
@@ -44,8 +39,23 @@ class TestSsllabs:
             assert dataclasses.asdict(api_data) == getattr(request.cls, call)
 
     @pytest.mark.asyncio
+    async def test_analyze(self, request):
+        with patch("ssllabs.api.info.Info.get",
+                   new=AsyncMock(return_value=from_dict(data_class=InfoData,
+                                 data=request.cls.info))), \
+             patch("ssllabs.api.analyze.Analyze.get",
+                   new=AsyncMock(return_value=from_dict(data_class=HostData,
+                                                        data=request.cls.analyze))):
+            ssllabs = Ssllabs()
+            api_data = await ssllabs.analyze(host="devolo.de")
+            assert dataclasses.asdict(api_data) == request.cls.analyze
+
+    @pytest.mark.asyncio
     async def test_analyze_not_ready_yet(self, request, mocker):
         with patch("asyncio.sleep", new=AsyncMock()), \
+             patch("ssllabs.api.info.Info.get",
+                   new=AsyncMock(return_value=from_dict(data_class=InfoData,
+                                 data=request.cls.info))), \
              patch("ssllabs.api.analyze.Analyze.get",
                    new=AsyncMock(side_effect=[
                        from_dict(data_class=HostData,
