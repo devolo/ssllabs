@@ -24,9 +24,22 @@ class _Api(ABC):
 
     async def _call(self, api_endpoint: str, **kwargs) -> httpx.Response:
         """Invocate API."""
-        r = await self._client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
-        r.raise_for_status()
+        try:
+            r = await self._client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
+        except (httpx.ReadTimeout, httpx.ConnectTimeout) as ex:
+            self._logger.error("Could not connect to %s", SSLLABS_URL)
+            await self._close()
+            raise ex from None
+        if httpx.codes.is_error(r.status_code):
+            await self._close()
+            r.raise_for_status()
         return r
+
+    async def _close(self):
+        """Close Client if needed."""
+        if self._needs_closing:
+            await self._client.aclose()
+            self._needs_closing = False
 
     def _verify_kwargs(self, given: KeysView, known: list):
         """Log warning, if an argument is unknown."""

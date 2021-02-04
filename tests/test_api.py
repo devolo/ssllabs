@@ -5,7 +5,7 @@ from logging import Logger
 from unittest.mock import patch
 
 import pytest
-from httpx import AsyncClient, HTTPStatusError, Request, Response
+from httpx import AsyncClient, HTTPStatusError, ReadTimeout, Request, Response
 
 from ssllabs.api._api import _Api
 from ssllabs.api.analyze import Analyze
@@ -55,11 +55,22 @@ class TestApi:
             assert r.json() == request.cls.info
 
     @pytest.mark.asyncio
-    async def test_api_raise(self):
+    async def test_api_raise(self, mocker):
         req = Request("GET", "")
+        spy = mocker.spy(_Api, "_close")
         with patch("httpx._client.AsyncClient.get", new=AsyncMock(return_value=Response(401, request=req))), \
              pytest.raises(HTTPStatusError):
             await _Api()._call("")  # pylint: disable=protected-access
+            assert spy.call_count == 1
+
+    @pytest.mark.asyncio
+    async def test_api_timeout(self, mocker):
+        req = Request("GET", "")
+        spy = mocker.spy(_Api, "_close")
+        with patch("httpx._client.AsyncClient.get", new=AsyncMock(side_effect=ReadTimeout(message="", request=req))), \
+             pytest.raises(ReadTimeout):
+            await _Api()._call("")  # pylint: disable=protected-access
+            assert spy.call_count == 1
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("result, data, parameters", API_CALLS)
