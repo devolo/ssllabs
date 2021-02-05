@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from abc import ABC
 from typing import KeysView, Optional
@@ -14,32 +13,17 @@ class _Api(ABC):
 
     def __init__(self, client: Optional[httpx.AsyncClient] = None):
         self._logger = logging.getLogger(f"{self.__class__.__module__}.{self.__class__.__name__}")
-        self._client = client or httpx.AsyncClient()
-        self._needs_closing = not bool(client)
-
-    def __del__(self):
-        if self._needs_closing:
-            loop = asyncio.get_event_loop()
-            loop.create_task(self._client.aclose())
+        self._client = client
 
     async def _call(self, api_endpoint: str, **kwargs) -> httpx.Response:
         """Invocate API."""
-        try:
+        if self._client:
             r = await self._client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
-        except (httpx.ReadTimeout, httpx.ConnectTimeout) as ex:
-            self._logger.error("Could not connect to %s", SSLLABS_URL)
-            await self._close()
-            raise ex from None
-        if httpx.codes.is_error(r.status_code):
-            await self._close()
-            r.raise_for_status()
+        else:
+            async with httpx.AsyncClient() as client:
+                r = await client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
+        r.raise_for_status()
         return r
-
-    async def _close(self):
-        """Close Client if needed."""
-        if self._needs_closing:
-            await self._client.aclose()
-            self._needs_closing = False
 
     def _verify_kwargs(self, given: KeysView, known: list):
         """Log warning, if an argument is unknown."""

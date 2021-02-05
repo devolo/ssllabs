@@ -5,7 +5,7 @@ from logging import Logger
 from unittest.mock import patch
 
 import pytest
-from httpx import AsyncClient, HTTPStatusError, ReadTimeout, Request, Response
+from httpx import AsyncClient, HTTPStatusError, Request, Response
 
 from ssllabs.api._api import _Api
 from ssllabs.api.analyze import Analyze
@@ -53,24 +53,17 @@ class TestApi:
                                                        content=json.dumps(request.cls.info)))):
             r = await _Api()._call("")  # pylint: disable=protected-access
             assert r.json() == request.cls.info
+            client = AsyncClient()
+            r = await _Api(client)._call("")  # pylint: disable=protected-access
+            await client.aclose()
+            assert r.json() == request.cls.info
 
     @pytest.mark.asyncio
-    async def test_api_raise(self, mocker):
+    async def test_api_raise(self):
         req = Request("GET", "")
-        spy = mocker.spy(_Api, "_close")
         with patch("httpx._client.AsyncClient.get", new=AsyncMock(return_value=Response(401, request=req))), \
              pytest.raises(HTTPStatusError):
             await _Api()._call("")  # pylint: disable=protected-access
-            assert spy.call_count == 1
-
-    @pytest.mark.asyncio
-    async def test_api_timeout(self, mocker):
-        req = Request("GET", "")
-        spy = mocker.spy(_Api, "_close")
-        with patch("httpx._client.AsyncClient.get", new=AsyncMock(side_effect=ReadTimeout(message="", request=req))), \
-             pytest.raises(ReadTimeout):
-            await _Api()._call("")  # pylint: disable=protected-access
-            assert spy.call_count == 1
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("result, data, parameters", API_CALLS)
@@ -88,14 +81,6 @@ class TestApi:
         r = RootCertsRaw()
         root_certs = await r.get()
         assert type(root_certs) is str
-
-    @pytest.mark.asyncio
-    async def test_not_closing_client(self, mocker):
-        api = _Api()
-        api._needs_closing = False  # pylint: disable=protected-access
-        spy = mocker.spy(AsyncClient, "aclose")
-        del api
-        assert spy.call_count == 0
 
     def test_unknown_parameter(self, mocker):
         spy = mocker.spy(Logger, "warning")

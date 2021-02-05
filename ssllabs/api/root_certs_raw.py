@@ -11,6 +11,8 @@ class RootCertsRaw(_Api):
         """Retrieve root certificates.
 
         :key trustStore: 1-Mozilla(default), 2-Apple MacOS, 3-Android, 4-Java, 5-Windows
+        :raises httpx.ReadTimeout: SSL Labs Servers don't respond.
+        :raises httpx.ConnectTimeout: SSL Labs Servers don't respond.
         """
         self._verify_kwargs(kwargs.keys(), ["trustStore"])
         r = await self._call("getRootCertsRaw", **kwargs)
