@@ -1,7 +1,7 @@
 import asyncio
 import logging
 
-from httpx import HTTPStatusError
+from httpx import ConnectTimeout, HTTPStatusError, ReadTimeout
 
 from .api import Analyze, Info, RootCertsRaw, StatusCodes
 from .data.host import HostData
@@ -27,7 +27,7 @@ class Ssllabs():
             await i.get()
             self._logger.info("SSL Labs servers are up an running.")
             return True
-        except HTTPStatusError as ex:
+        except (HTTPStatusError, ReadTimeout, ConnectTimeout) as ex:
             self._logger.error(ex)
             return False
 

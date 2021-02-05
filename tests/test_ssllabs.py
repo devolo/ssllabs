@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 import pytest
 from dacite import from_dict
+from httpx import ConnectTimeout, HTTPStatusError, ReadTimeout
 
 from ssllabs import Ssllabs
 from ssllabs.api.analyze import Analyze
@@ -115,7 +116,7 @@ class TestSsllabs:
             await ssllabs.root_certs(trust_store=6)
 
     @pytest.mark.asyncio
-    async def test_availability(self, request):
+    async def test_availabile(self, request):
         with patch("ssllabs.api.info.Info.get",
                    new=AsyncMock(return_Value=from_dict(data_class=InfoData,
                                                         data=request.cls.info))):
@@ -123,9 +124,17 @@ class TestSsllabs:
             assert await ssllabs.availability()
 
     @pytest.mark.asyncio
-    async def test_availability_http_error(self):
-        from httpx import Request, Response
-        req = Request("GET", "")
-        with patch("httpx._client.AsyncClient.get", new=AsyncMock(return_value=Response(401, request=req))):
+    @pytest.mark.parametrize("exception", [ReadTimeout, ConnectTimeout])
+    async def test_unavailabile_timeout(self, exception):
+        with patch("ssllabs.api.info.Info.get", new=AsyncMock(side_effect=exception(message="", request=""))):
+            ssllabs = Ssllabs()
+            assert not await ssllabs.availability()
+
+    @pytest.mark.asyncio
+    async def test_unavailabile_status_error(self):
+        with patch("ssllabs.api.info.Info.get",
+                   new=AsyncMock(side_effect=HTTPStatusError(message="",
+                                                             request="",
+                                                             response=""))):
             ssllabs = Ssllabs()
             assert not await ssllabs.availability()
