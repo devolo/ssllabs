@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from abc import ABC
 from typing import KeysView, Optional
@@ -14,17 +13,15 @@ class _Api(ABC):
 
     def __init__(self, client: Optional[httpx.AsyncClient] = None):
         self._logger = logging.getLogger(f"{self.__class__.__module__}.{self.__class__.__name__}")
-        self._client = client or httpx.AsyncClient()
-        self._needs_closing = not bool(client)
-
-    def __del__(self):
-        if self._needs_closing:
-            loop = asyncio.get_event_loop()
-            loop.create_task(self._client.aclose())
+        self._client = client
 
     async def _call(self, api_endpoint: str, **kwargs) -> httpx.Response:
         """Invocate API."""
-        r = await self._client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
+        if self._client:
+            r = await self._client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
+        else:
+            async with httpx.AsyncClient() as client:
+                r = await client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
         r.raise_for_status()
         return r
 

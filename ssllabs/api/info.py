@@ -11,6 +11,10 @@ class Info(_Api):
     """
 
     async def get(self) -> InfoData:
-        """Get information."""
+        """Get information.
+
+        :raises httpx.ReadTimeout: SSL Labs Servers don't respond.
+        :raises httpx.ConnectTimeout: SSL Labs Servers don't respond.
+        """
         r = await self._call("info")
         return from_dict(data_class=InfoData, data=r.json())

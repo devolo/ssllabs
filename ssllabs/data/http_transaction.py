@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 @dataclass
@@ -12,16 +12,16 @@ class HttpTransactionData:
     requestUrl: str
     """Request URL"""
 
-    statusCode: int
+    statusCode: Optional[int]
     """Response status code"""
 
-    requestLine: str
+    requestLine: Optional[str]
     """The entire request line as a single field"""
 
     requestHeaders: List[str]
     """An array of request HTTP headers, each with name and value"""
 
-    responseLine: str
+    responseLine: Optional[str]
     """The entire response line as a single field"""
 
     responseHeadersRaw: List[str]

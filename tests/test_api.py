@@ -53,6 +53,10 @@ class TestApi:
                                                        content=json.dumps(request.cls.info)))):
             r = await _Api()._call("")  # pylint: disable=protected-access
             assert r.json() == request.cls.info
+            client = AsyncClient()
+            r = await _Api(client)._call("")  # pylint: disable=protected-access
+            await client.aclose()
+            assert r.json() == request.cls.info
 
     @pytest.mark.asyncio
     async def test_api_raise(self):
@@ -77,14 +81,6 @@ class TestApi:
         r = RootCertsRaw()
         root_certs = await r.get()
         assert type(root_certs) is str
-
-    @pytest.mark.asyncio
-    async def test_not_closing_client(self, mocker):
-        api = _Api()
-        api._needs_closing = False  # pylint: disable=protected-access
-        spy = mocker.spy(AsyncClient, "aclose")
-        del api
-        assert spy.call_count == 0
 
     def test_unknown_parameter(self, mocker):
         spy = mocker.spy(Logger, "warning")
