@@ -1,10 +1,11 @@
 import dataclasses
 import json
 import re
+from logging import Logger
 from unittest.mock import patch
 
 import pytest
-from httpx import HTTPStatusError, Request, Response
+from httpx import AsyncClient, HTTPStatusError, Request, Response
 
 from ssllabs.api._api import _Api
 from ssllabs.api.analyze import Analyze
@@ -52,6 +53,10 @@ class TestApi:
                                                        content=json.dumps(request.cls.info)))):
             r = await _Api()._call("")  # pylint: disable=protected-access
             assert r.json() == request.cls.info
+            client = AsyncClient()
+            r = await _Api(client)._call("")  # pylint: disable=protected-access
+            await client.aclose()
+            assert r.json() == request.cls.info
 
     @pytest.mark.asyncio
     async def test_api_raise(self):
@@ -76,3 +81,9 @@ class TestApi:
         r = RootCertsRaw()
         root_certs = await r.get()
         assert type(root_certs) is str
+
+    def test_unknown_parameter(self, mocker):
+        spy = mocker.spy(Logger, "warning")
+        api = _Api()
+        api._verify_kwargs(["given"], ["known"])  # pylint: disable=protected-access
+        assert spy.call_count == 1

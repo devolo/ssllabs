@@ -4,6 +4,7 @@ from unittest.mock import patch
 
 import pytest
 from dacite import from_dict
+from httpx import ConnectTimeout, HTTPStatusError, ReadTimeout
 
 from ssllabs import Ssllabs
 from ssllabs.api.analyze import Analyze
@@ -19,17 +20,12 @@ except ImportError:
 
 class TestSsllabs:
 
-    API_CALLS = [("analyze.Analyze",
-                  HostData,
-                  {
-                      "host": "devolo.de"
-                  }),
-                 ("info.Info",
-                  InfoData,
-                  {}),
-                 ("status_codes.StatusCodes",
-                  StatusCodesData,
-                  {})]
+    API_CALLS: list = [("info.Info",
+                        InfoData,
+                        {}),
+                       ("status_codes.StatusCodes",
+                        StatusCodesData,
+                        {})]
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("api, result, parameters", API_CALLS)
@@ -44,8 +40,23 @@ class TestSsllabs:
             assert dataclasses.asdict(api_data) == getattr(request.cls, call)
 
     @pytest.mark.asyncio
+    async def test_analyze(self, request):
+        with patch("ssllabs.api.info.Info.get",
+                   new=AsyncMock(return_value=from_dict(data_class=InfoData,
+                                 data=request.cls.info))), \
+             patch("ssllabs.api.analyze.Analyze.get",
+                   new=AsyncMock(return_value=from_dict(data_class=HostData,
+                                                        data=request.cls.analyze))):
+            ssllabs = Ssllabs()
+            api_data = await ssllabs.analyze(host="devolo.de")
+            assert dataclasses.asdict(api_data) == request.cls.analyze
+
+    @pytest.mark.asyncio
     async def test_analyze_not_ready_yet(self, request, mocker):
         with patch("asyncio.sleep", new=AsyncMock()), \
+             patch("ssllabs.api.info.Info.get",
+                   new=AsyncMock(return_value=from_dict(data_class=InfoData,
+                                 data=request.cls.info))), \
              patch("ssllabs.api.analyze.Analyze.get",
                    new=AsyncMock(side_effect=[
                        from_dict(data_class=HostData,
@@ -105,7 +116,7 @@ class TestSsllabs:
             await ssllabs.root_certs(trust_store=6)
 
     @pytest.mark.asyncio
-    async def test_availability(self, request):
+    async def test_availabile(self, request):
         with patch("ssllabs.api.info.Info.get",
                    new=AsyncMock(return_Value=from_dict(data_class=InfoData,
                                                         data=request.cls.info))):
@@ -113,9 +124,17 @@ class TestSsllabs:
             assert await ssllabs.availability()
 
     @pytest.mark.asyncio
-    async def test_availability_http_error(self):
-        from httpx import Request, Response
-        req = Request("GET", "")
-        with patch("httpx._client.AsyncClient.get", new=AsyncMock(return_value=Response(401, request=req))):
+    @pytest.mark.parametrize("exception", [ReadTimeout, ConnectTimeout])
+    async def test_unavailabile_timeout(self, exception):
+        with patch("ssllabs.api.info.Info.get", new=AsyncMock(side_effect=exception(message="", request=""))):
+            ssllabs = Ssllabs()
+            assert not await ssllabs.availability()
+
+    @pytest.mark.asyncio
+    async def test_unavailabile_status_error(self):
+        with patch("ssllabs.api.info.Info.get",
+                   new=AsyncMock(side_effect=HTTPStatusError(message="",
+                                                             request="",
+                                                             response=""))):
             ssllabs = Ssllabs()
             assert not await ssllabs.availability()

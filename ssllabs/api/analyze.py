@@ -30,6 +30,10 @@ class Analyze(_Api):
         :key ignoreMismatch: Set to "on" to proceed with assessments even when the server certificate doesn't match the
                              assessment hostname. Set to off by default. Please note that this parameter is ignored if a
                              cached report is returned.
+        :raises httpx.ConnectTimeout: SSL Labs Servers don't respond.
+        :raises httpx.HTTPStatusError: A client or server error response occured.
+        :raises httpx.ReadTimeout: SSL Labs Servers don't respond.
         """
+        self._verify_kwargs(kwargs.keys(), ["publish", "startNew", "fromCache", "maxAge", "all", "ignoreMismatch"])
         r = await self._call("analyze", host=host, **kwargs)
         return from_dict(data_class=HostData, data=r.json())
