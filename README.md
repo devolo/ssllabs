@@ -153,3 +153,7 @@ async def get_grade():
 ```
 
 Classes are called like the [API call](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-calls) without the leading get. The get method will query the API. It will take the parameters like in the documentation and return a dataclass representing the object, the API describes. One exception in the naming: the getEndpointData call is implemented in the Endpoint class to be able to better distinguish it from its EndpointData result object.
+
+## Exceptions
+
+Three types of exceptions might hit you, if the connection to SSL Labs' API is affected: ```httpx.ConnectTimeout``` or ```httpx.ReadTimeout``` appear, if the servers are down, and ```httpx.HTTPStatusError``` appears, if there is a client or server [error response](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#error-response-status-codes). In this cases, you are asked to wait 15 to 30 minutes before you try again.
