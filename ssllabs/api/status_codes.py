@@ -11,6 +11,11 @@ class StatusCodes(_Api):
     """
 
     async def get(self) -> StatusCodesData:
-        """Retrieve known status codes."""
+        """Retrieve known status codes.
+
+        :raises httpx.ConnectTimeout: SSL Labs Servers don't respond.
+        :raises httpx.HTTPStatusError: A client or server error response occured.
+        :raises httpx.ReadTimeout: SSL Labs Servers don't respond.
+        """
         r = await self._call("getStatusCodes")
         return from_dict(data_class=StatusCodesData, data=r.json())

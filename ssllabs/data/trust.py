@@ -12,7 +12,7 @@ class TrustData:
     rootStore: str
     """this field shows the Trust store being used (eg. 'Mozilla')"""
 
-    isTrusted: bool
+    isTrusted: Optional[bool]
     """True if trusted against above rootStore"""
 
     trustErrorMessage: Optional[str]
