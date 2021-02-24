@@ -1,11 +1,9 @@
 import dataclasses
-import json
 import re
 from logging import Logger
-from unittest.mock import patch
 
 import pytest
-from httpx import AsyncClient, HTTPStatusError, Request, Response
+from httpx import AsyncClient, HTTPStatusError
 
 from ssllabs.api._api import _Api
 from ssllabs.api.analyze import Analyze
@@ -17,11 +15,6 @@ from ssllabs.data.endpoint import EndpointData
 from ssllabs.data.host import HostData
 from ssllabs.data.info import InfoData
 from ssllabs.data.status_codes import StatusCodesData
-
-try:
-    from unittest.mock import AsyncMock
-except ImportError:
-    from asynctest import CoroutineMock as AsyncMock
 
 
 class TestApi:
@@ -45,39 +38,34 @@ class TestApi:
                   })]
 
     @pytest.mark.asyncio
-    async def test_api(self, request):
-        req = Request("GET", "")
-        with patch("httpx._client.AsyncClient.get",
-                   new=AsyncMock(return_value=Response(200,
-                                                       request=req,
-                                                       content=json.dumps(request.cls.info)))):
-            r = await _Api()._call("")  # pylint: disable=protected-access
-            assert r.json() == request.cls.info
-            client = AsyncClient()
-            r = await _Api(client)._call("")  # pylint: disable=protected-access
-            await client.aclose()
-            assert r.json() == request.cls.info
+    async def test_api(self, request, httpx_mock):
+        httpx_mock.add_response(json=request.cls.info)
+        r = await _Api()._call("")  # pylint: disable=protected-access
+        assert r.json() == request.cls.info
+        client = AsyncClient()
+        r = await _Api(client)._call("")  # pylint: disable=protected-access
+        await client.aclose()
+        assert r.json() == request.cls.info
 
     @pytest.mark.asyncio
-    async def test_api_raise(self):
-        req = Request("GET", "")
-        with patch("httpx._client.AsyncClient.get", new=AsyncMock(return_value=Response(401, request=req))), \
-             pytest.raises(HTTPStatusError):
+    async def test_api_raise(self, httpx_mock):
+        httpx_mock.add_response(status_code=401)
+        with pytest.raises(HTTPStatusError):
             await _Api()._call("")  # pylint: disable=protected-access
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("result, data, parameters", API_CALLS)
-    async def test_api_calls(self, request, patch_httpx, result, data, parameters):
+    async def test_api_calls(self, request, httpx_mock, result, data, parameters):
         test_data = re.sub(r"(?<!^)(?=[A-Z])", "_", result.__name__).lower()
-        patch_httpx.return_value._text = json.dumps(getattr(request.cls, test_data))  # pylint: disable=protected-access
+        httpx_mock.add_response(json=getattr(request.cls, test_data))
         api = result()
         api_data = await api.get(**parameters)
         assert type(api_data) is data
         assert dataclasses.asdict(api_data) == getattr(request.cls, test_data)
 
     @pytest.mark.asyncio
-    async def test_root_certs_raw(self, request, patch_httpx):
-        patch_httpx.return_value._text = json.dumps(request.cls.root_certs)  # pylint: disable=protected-access
+    async def test_root_certs_raw(self, request, httpx_mock):
+        httpx_mock.add_response(json=request.cls.root_certs)
         r = RootCertsRaw()
         root_certs = await r.get()
         assert type(root_certs) is str
