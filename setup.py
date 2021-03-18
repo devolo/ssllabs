@@ -35,8 +35,7 @@ setup(
         "Operating System :: OS Independent",
     ],
     install_requires=["dacite",
-                      "httpx",
-                      "m2r2"],
+                      "httpx"],
     extras_require={
         "dev": [
             "pre-commit",

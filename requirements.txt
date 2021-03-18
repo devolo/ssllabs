@@ -2,3 +2,4 @@ setuptools>=46.4.0
 dacite
 httpx
 git+https://github.com/bashtage/sphinx-material.git
+m2r2
