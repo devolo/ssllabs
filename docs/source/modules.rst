@@ -1,7 +1,7 @@
-API Reference
-=============
+ssllabs
+=======
 
-.. autosummary::
-   :toctree: _autosummary
+.. toctree::
+   :maxdepth: 4
 
-    ssllabs
+   ssllabs
