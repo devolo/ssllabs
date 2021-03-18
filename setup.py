@@ -18,6 +18,7 @@ class PostDevelopCommand(develop):
         develop.run(self)
 
 
+# TODO: move doc requirements to own file
 pkg_resources.require('setuptools>=46.4.0')
 setup(
     name="ssllabs",
@@ -33,10 +34,9 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=[
-        "dacite",
-        "httpx",
-    ],
+    install_requires=["dacite",
+                      "httpx",
+                      "m2r2"],
     extras_require={
         "dev": [
             "pre-commit",
