@@ -18,7 +18,6 @@ class PostDevelopCommand(develop):
         develop.run(self)
 
 
-# TODO: move doc requirements to own file
 pkg_resources.require('setuptools>=46.4.0')
 setup(
     name="ssllabs",
@@ -39,6 +38,11 @@ setup(
     extras_require={
         "dev": [
             "pre-commit",
+        ],
+        "docs": [
+            "m2r2",
+            "pydata_sphinx_theme",
+            "sphinx",
         ],
         "test": [
             "asynctest;python_version<'3.8'",
