@@ -29,6 +29,9 @@
     {% set navbar_class, navbar_align = navbar_align_class() %}
     <div id="navbar-menu" class="{{ navbar_class }} collapse navbar-collapse">
         <ul id="navbar-main-elements" class="navbar-nav {{ navbar_align }}">
+            <li class="toctree-l1 nav-item">
+                <a class="reference internal nav-link" href="index.html">Readme</a>
+            </li>
             {{ generate_nav_html("navbar", maxdepth=1, collapse=True, includehidden=True, titles_only=True) }}
             <li class="toctree-l1 nav-item">
                 <a class="reference internal nav-link" href="py-modindex.html">Python Module Index</a>

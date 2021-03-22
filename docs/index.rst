@@ -8,8 +8,11 @@
    :maxdepth: 2
    :caption: Content
 
-   Readme <readme>
    changelog
 
 
-.. include:: readme.rst
+Readme
+======
+
+.. mdinclude:: ../README.md
+   :start-line: 3
