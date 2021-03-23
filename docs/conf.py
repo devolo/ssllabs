@@ -16,7 +16,7 @@ from pkg_resources import get_distribution
 
 sys.path.insert(0, os.path.abspath('../'))
 
-version = get_distribution('ssllabs').versionease
+version = get_distribution('ssllabs').version
 
 # -- Project information -----------------------------------------------------
 
