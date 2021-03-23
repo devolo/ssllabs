@@ -46,13 +46,6 @@ cd ssllabs
 python setup.py install
 ```
 
-If you want to run out tests, install the extra requirements and start pytest.
-
-```bash
-pip install -e .[test]
-pytest
-```
-
 ## High level usage
 
 If you want to cover on the common usage cases, you can use our high level implementations.
