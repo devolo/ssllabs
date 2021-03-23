@@ -10,6 +10,7 @@ Defining the system requirements with exact versions typically is difficult. But
 * Python 3.7.9
 * pytest 4.5.0
 * pytest-asyncio 0.14.0
+* pytest-httpx 0.10.1
 * pytest-mock 6.2.1
 * asynctest 0.13.0
 
