@@ -24,7 +24,7 @@ Then just use the make file.
 
 ```bash
 cd docs
-make
+make html
 ```
 
 You will find the build documentation in ```docs/_build/html``` afterwards.
