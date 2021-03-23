@@ -20,7 +20,7 @@ version = get_distribution('ssllabs').version
 
 # -- Project information -----------------------------------------------------
 
-project = 'ssllabs'
+project = get_distribution('ssllabs').project_name
 copyright = '2021, devolo AG'
 author = 'Markus Bong, Guido Schmitz'
 
