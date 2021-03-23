@@ -5,7 +5,7 @@ from .ssllabs import Ssllabs
 __license__ = "MIT"
 
 try:
-    __version__ = get_distribution("ssllabs").version
+    __version__ = get_distribution(__package__).version
 except DistributionNotFound:
     # package is not installed
     __version__ = "0.0.0"
