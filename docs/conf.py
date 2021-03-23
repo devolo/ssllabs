@@ -16,11 +16,11 @@ from pkg_resources import get_distribution
 
 sys.path.insert(0, os.path.abspath('../'))
 
-version = get_distribution('ssllabs').version
+version = get_distribution(__package__).version
 
 # -- Project information -----------------------------------------------------
 
-project = get_distribution('ssllabs').project_name
+project = get_distribution(__package__).project_name
 copyright = '2021, devolo AG'
 author = 'Markus Bong, Guido Schmitz'
 
