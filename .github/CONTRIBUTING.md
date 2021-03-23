@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you very much for considering to contribute to our project. The devolo PLC devices deliver interesting data that we wanted to be usable in other projects. To achieve that goal, help is welcome.
+Thank you very much for considering to contribute to our project.
 
 The following guidelines will help you to understand how you can help. They will also make transparent to you the time we need to manage and develop this open source project. In return, we will reciprocate that respect in addressing your issues, assessing changes, and helping you finalize your pull requests.
 

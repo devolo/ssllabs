@@ -12,12 +12,7 @@ Defining the system requirements with exact versions typically is difficult. But
 * dacite 1.6.0
 * httpx 0.16.1
 
-Other versions and even other operating systems might work. Feel free to tell us about your experience. If you want to run our unit tests, you also need:
-
-* pytest 4.5.0
-* pytest-asyncio 0.14.0
-* pytest-mock 6.2.1
-* asynctest 0.13.0
+Other versions and even other operating systems might work. Feel free to tell us about your experience.
 
 ## Versioning
 
@@ -44,13 +39,6 @@ Then you need to take care of the requirements.
 ```bash
 cd ssllabs
 python setup.py install
-```
-
-If you want to run out tests, install the extra requirements and start pytest.
-
-```bash
-pip install -e .[test]
-pytest
 ```
 
 ## High level usage

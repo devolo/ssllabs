@@ -33,13 +33,16 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=[
-        "dacite",
-        "httpx",
-    ],
+    install_requires=["dacite",
+                      "httpx"],
     extras_require={
         "dev": [
             "pre-commit",
+        ],
+        "docs": [
+            "m2r2",
+            "pydata_sphinx_theme",
+            "sphinx",
         ],
         "test": [
             "asynctest;python_version<'3.8'",
