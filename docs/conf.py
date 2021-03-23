@@ -12,11 +12,15 @@
 #
 import os
 import sys
+from pkg_resources import get_distribution
+
 sys.path.insert(0, os.path.abspath('../'))
+
+version = get_distribution(__package__).version
 
 # -- Project information -----------------------------------------------------
 
-project = 'ssllabs'
+project = get_distribution(__package__).project_name
 copyright = '2021, devolo AG'
 author = 'Markus Bong, Guido Schmitz'
 
@@ -25,7 +29,7 @@ author = 'Markus Bong, Guido Schmitz'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.autosummary", "m2r2", "sphinx_rtd_theme"]
+extensions = ["sphinx.ext.autosummary", "m2r2"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
