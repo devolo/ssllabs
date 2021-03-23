@@ -30,14 +30,14 @@
     <div id="navbar-menu" class="{{ navbar_class }} collapse navbar-collapse">
         <ul id="navbar-main-elements" class="navbar-nav {{ navbar_align }}">
             <li class="toctree-l1 nav-item">
-                <a class="reference internal nav-link" href="index.html">Readme</a>
+                <a class="reference internal nav-link" href="{{ pathto('index') }}">Readme</a>
             </li>
             {{ generate_nav_html("navbar", maxdepth=1, collapse=True, includehidden=True, titles_only=True) }}
             <li class="toctree-l1 nav-item">
-                <a class="reference internal nav-link" href="py-modindex.html">Python Module Index</a>
+                <a class="reference internal nav-link" href="{{ pathto('py-modindex') }}">Python Module Index</a>
             </li>
             <li class="toctree-l1 nav-item">
-                <a class="reference internal nav-link" href="genindex.html">Index</a>
+                <a class="reference internal nav-link" href="{{ pathto('genindex') }}">Index</a>
             </li>
             {% for external_link in theme_external_links %}
             <li class="nav-item">
