@@ -25,6 +25,7 @@ setup(
     author_email="m.bong@famabo.de, guido.schmitz@fedaix.de",
     description="Qualys SSL Labs API in Python",
     long_description_content_type="text/markdown",
+    use_scm_version=True,
     url="https://github.com/devolo/ssllabs",
     packages=find_packages(exclude=("tests*",
                                     )),
@@ -33,22 +34,27 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=[
-        "dacite",
-        "httpx",
-    ],
+    install_requires=["dacite",
+                      "httpx"],
     extras_require={
         "dev": [
             "pre-commit",
+        ],
+        "docs": [
+            "m2r2",
+            "pydata_sphinx_theme",
+            "sphinx",
         ],
         "test": [
             "asynctest;python_version<'3.8'",
             "pytest",
             "pytest-asyncio",
             "pytest-cov",
+            "pytest-httpx",
             "pytest-mock",
         ],
     },
+    setup_requires=["setuptools_scm"],
     cmdclass={"develop": PostDevelopCommand},
     python_requires=">=3.7",
 )
