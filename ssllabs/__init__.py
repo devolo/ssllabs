@@ -1,16 +1,13 @@
-from .ssllabs import Ssllabs
+from pkg_resources import DistributionNotFound, get_distribution
 
-try:
-    from importlib.metadata import PackageNotFoundError, version
-except ImportError:
-    from importlib_metadata import PackageNotFoundError, version  # type: ignore[no-redef]
+from .ssllabs import Ssllabs
 
 __license__ = "MIT"
 
 try:
-    __version__ = version("package-name")
-except PackageNotFoundError:
-    # package is not installed - e.g. pulled and run locally
+    __version__ = get_distribution("ssllabs").version
+except DistributionNotFound:
+    # package is not installed
     __version__ = "0.0.0"
 
 __all__ = ['Ssllabs', "__license__", "__version__"]
