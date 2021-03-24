@@ -29,7 +29,7 @@ author = "Markus Bong, Guido Schmitz"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named "sphinx.ext.*") or your custom
 # ones.
-extensions = ["sphinx.ext.autosummary", "m2r2"]
+extensions = ["sphinx.ext.autosummary", "sphinx.ext.napoleon", "sphinx.ext.viewcode", "m2r2"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -38,6 +38,9 @@ templates_path = ["_templates"]
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "README.md"]
+
+# Show init documentation instead of class documentation.
+autoclass_content = "both"
 
 # -- Options for HTML output -------------------------------------------------
 

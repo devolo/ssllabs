@@ -12,6 +12,9 @@ class _Api(ABC):
     """Abstract class to communicate with Qualys SSL Labs Assessment APIs."""
 
     def __init__(self, client: Optional[httpx.AsyncClient] = None):
+        """
+        :param client: HTTP client to use when communicating with the API.
+        """
         self._logger = logging.getLogger(f"{self.__class__.__module__}.{self.__class__.__name__}")
         self._client = client
 

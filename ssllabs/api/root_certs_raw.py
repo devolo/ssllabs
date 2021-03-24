@@ -10,7 +10,7 @@ class RootCertsRaw(_Api):
     async def get(self, **kwargs) -> str:
         """Retrieve root certificates.
 
-        :key trustStore: 1-Mozilla(default), 2-Apple MacOS, 3-Android, 4-Java, 5-Windows
+        :keyword trustStore: 1-Mozilla(default), 2-Apple MacOS, 3-Android, 4-Java, 5-Windows
         :raises httpx.ConnectTimeout: SSL Labs Servers don't respond.
         :raises httpx.HTTPStatusError: A client or server error response occured.
         :raises httpx.ReadTimeout: SSL Labs Servers don't respond.

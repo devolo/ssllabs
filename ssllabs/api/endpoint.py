@@ -15,9 +15,9 @@ class Endpoint(_Api):
 
         :param host: Hostname to analyze
         :param s: Endpoint IP address
-        :key fromCache: Always deliver cached assessment reports if available; optional, defaults to "off". This parameter is
-                        intended for API consumers that don't want to wait for assessment results. Can't be used at the same
-                        time as the startNew parameter.
+        :keyword fromCache: Always deliver cached assessment reports if available; optional, defaults to "off". This parameter
+                            is intended for API consumers that don't want to wait for assessment results. Can't be used at the
+                            same time as the startNew parameter.
         :raises httpx.ConnectTimeout: SSL Labs Servers don't respond.
         :raises httpx.HTTPStatusError: A client or server error response occured.
         :raises httpx.ReadTimeout: SSL Labs Servers don't respond.
