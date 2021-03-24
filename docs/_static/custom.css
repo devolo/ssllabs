@@ -1,0 +1,7 @@
+.navbar-brand {
+    font-size: 1.6rem;
+}
+
+.navbar-brand p {
+    color: rgba(var(--pst-color-h1),1);
+}
