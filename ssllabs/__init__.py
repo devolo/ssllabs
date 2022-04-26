@@ -10,4 +10,4 @@ except DistributionNotFound:
     # package is not installed
     __version__ = "0.0.0"
 
-__all__ = ['Ssllabs', "__license__", "__version__"]
+__all__ = ["Ssllabs", "__license__", "__version__"]

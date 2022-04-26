@@ -19,23 +19,12 @@ from ssllabs.data.status_codes import StatusCodesData
 
 class TestApi:
 
-    API_CALLS = [(Endpoint,
-                  EndpointData,
-                  {
-                      "host": "devolo.de",
-                      "s": "195.201.179.93"
-                  }),
-                 (StatusCodes,
-                  StatusCodesData,
-                  {}),
-                 (Info,
-                  InfoData,
-                  {}),
-                 (Analyze,
-                  HostData,
-                  {
-                      "host": "devolo.de"
-                  })]
+    API_CALLS = [
+        (Endpoint, EndpointData, {"host": "devolo.de", "s": "195.201.179.93"}),
+        (StatusCodes, StatusCodesData, {}),
+        (Info, InfoData, {}),
+        (Analyze, HostData, {"host": "devolo.de"}),
+    ]
 
     @pytest.mark.asyncio
     async def test_api(self, request, httpx_mock):

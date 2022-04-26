@@ -9,7 +9,7 @@ from .data.info import InfoData
 from .data.status_codes import StatusCodesData
 
 
-class Ssllabs():
+class Ssllabs:
     """Highlevel methods to interact with the SSL Labs Assessment APIs."""
 
     def __init__(self):
@@ -57,10 +57,9 @@ class Ssllabs():
             await asyncio.sleep(info.newAssessmentCoolOff / 1000)
 
         a = Analyze()
-        host_object = await a.get(host=host,
-                                  startNew="on",
-                                  publish="on" if publish else "off",
-                                  ignoreMismatch="on" if ignore_mismatch else "off")
+        host_object = await a.get(
+            host=host, startNew="on", publish="on" if publish else "off", ignoreMismatch="on" if ignore_mismatch else "off"
+        )
         self._semaphore.release()
         while host_object.status not in ["READY", "ERROR"]:
             self._logger.debug("Assessment of %s not ready yet.", host)
@@ -86,8 +85,10 @@ class Ssllabs():
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#retrieve-root-certificates
         """
         if not 1 <= trust_store <= 5:
-            raise ValueError("""Trust store not found. Please choose on of the following:
-            1-Mozilla, 2-Apple MacOS, 3-Android, 4-Java, 5-Windows""")
+            raise ValueError(
+                """Trust store not found. Please choose on of the following:
+            1-Mozilla, 2-Apple MacOS, 3-Android, 4-Java, 5-Windows"""
+            )
         rcr = RootCertsRaw()
         return await rcr.get(trustStore=trust_store)
 

@@ -31,4 +31,5 @@ class _Api(ABC):
             if arg not in known:
                 self._logger.warning(
                     "Argument '%s' is not known by the SSL Labs API. It will be send, but the results might be unexpected.",
-                    arg)
+                    arg,
+                )

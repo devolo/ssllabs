@@ -9,7 +9,6 @@ from setuptools.command.develop import develop
 # Create post develop command class for hooking into the python setup process
 # This command will run after dependencies are installed
 class PostDevelopCommand(develop):
-
     def run(self):
         try:
             check_call(shlex.split("pre-commit install"))
@@ -18,7 +17,7 @@ class PostDevelopCommand(develop):
         develop.run(self)
 
 
-pkg_resources.require('setuptools>=46.4.0')
+pkg_resources.require("setuptools>=46.4.0")
 setup(
     name="ssllabs",
     author="Markus Bong, Guido Schmitz",
@@ -26,16 +25,16 @@ setup(
     description="Qualys SSL Labs API in Python",
     long_description_content_type="text/markdown",
     use_scm_version=True,
+    license="MIT",
+    license_files=("LICENSE.md",),
     url="https://github.com/devolo/ssllabs",
-    packages=find_packages(exclude=("tests*",
-                                    )),
+    packages=find_packages(exclude=("tests*",)),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=["dacite",
-                      "httpx"],
+    install_requires=["dacite", "httpx"],
     extras_require={
         "dev": [
             "pre-commit",

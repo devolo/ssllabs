@@ -41,8 +41,8 @@ jobs:
         pylint --exit-zero --score=n --disable=C,E,R --enable=useless-suppression ssllabs
     - name: Lint with mypy
       run: |
-        pip install mypy
-        mypy --ignore-missing-imports ssllabs
+        pip install mypy types-setuptools
+        mypy ssllabs
   test:
     name: Test with Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest

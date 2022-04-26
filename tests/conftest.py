@@ -8,7 +8,7 @@ import pytest
 
 @pytest.fixture(autouse=True, scope="class")
 def test_data_fixture(request):
-    """ Load test data. """
+    """Load test data."""
     path = pathlib.Path(__file__).parent / "test_data"
     files = list(path.glob("*.json"))
     for file in files:
