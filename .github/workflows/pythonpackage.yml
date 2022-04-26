@@ -42,7 +42,7 @@ jobs:
     - name: Lint with mypy
       run: |
         pip install mypy types-setuptools
-        mypy --ignore-missing-imports ssllabs
+        mypy ssllabs
   test:
     name: Test with Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
