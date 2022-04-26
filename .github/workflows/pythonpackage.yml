@@ -42,6 +42,7 @@ jobs:
     - name: Lint with mypy
       run: |
         pip install mypy
+        mypy --install-types
         mypy --ignore-missing-imports ssllabs
   test:
     name: Test with Python ${{ matrix.python-version }}
