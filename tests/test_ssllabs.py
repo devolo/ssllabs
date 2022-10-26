@@ -20,50 +20,44 @@ except ImportError:
 
 class TestSsllabs:
 
-    API_CALLS: list = [("info.Info",
-                        InfoData,
-                        {}),
-                       ("status_codes.StatusCodes",
-                        StatusCodesData,
-                        {})]
+    API_CALLS: list = [("info.Info", InfoData, {}), ("status_codes.StatusCodes", StatusCodesData, {})]
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("api, result, parameters", API_CALLS)
     async def test_ssllabs(self, request, api, result, parameters):
         call = api.split(".")[0]
-        with patch(f"ssllabs.api.{api}.get",
-                   new=AsyncMock(return_value=from_dict(data_class=result,
-                                                        data=getattr(request.cls,
-                                                                     call)))):
+        with patch(
+            f"ssllabs.api.{api}.get", new=AsyncMock(return_value=from_dict(data_class=result, data=getattr(request.cls, call)))
+        ):
             ssllabs = Ssllabs()
             api_data = await getattr(ssllabs, call)(**parameters)
             assert dataclasses.asdict(api_data) == getattr(request.cls, call)
 
     @pytest.mark.asyncio
     async def test_analyze(self, request):
-        with patch("ssllabs.api.info.Info.get",
-                   new=AsyncMock(return_value=from_dict(data_class=InfoData,
-                                 data=request.cls.info))), \
-             patch("ssllabs.api.analyze.Analyze.get",
-                   new=AsyncMock(return_value=from_dict(data_class=HostData,
-                                                        data=request.cls.analyze))):
+        with patch(
+            "ssllabs.api.info.Info.get", new=AsyncMock(return_value=from_dict(data_class=InfoData, data=request.cls.info))
+        ), patch(
+            "ssllabs.api.analyze.Analyze.get",
+            new=AsyncMock(return_value=from_dict(data_class=HostData, data=request.cls.analyze)),
+        ):
             ssllabs = Ssllabs()
             api_data = await ssllabs.analyze(host="devolo.de")
             assert dataclasses.asdict(api_data) == request.cls.analyze
 
     @pytest.mark.asyncio
     async def test_analyze_not_ready_yet(self, request, mocker):
-        with patch("asyncio.sleep", new=AsyncMock()), \
-             patch("ssllabs.api.info.Info.get",
-                   new=AsyncMock(return_value=from_dict(data_class=InfoData,
-                                 data=request.cls.info))), \
-             patch("ssllabs.api.analyze.Analyze.get",
-                   new=AsyncMock(side_effect=[
-                       from_dict(data_class=HostData,
-                                 data=request.cls.analyze_running),
-                       from_dict(data_class=HostData,
-                                 data=request.cls.analyze)
-                   ])):
+        with patch("asyncio.sleep", new=AsyncMock()), patch(
+            "ssllabs.api.info.Info.get", new=AsyncMock(return_value=from_dict(data_class=InfoData, data=request.cls.info))
+        ), patch(
+            "ssllabs.api.analyze.Analyze.get",
+            new=AsyncMock(
+                side_effect=[
+                    from_dict(data_class=HostData, data=request.cls.analyze_running),
+                    from_dict(data_class=HostData, data=request.cls.analyze),
+                ]
+            ),
+        ):
             spy = mocker.spy(Analyze, "get")
             ssllabs = Ssllabs()
             await ssllabs.analyze(host="devolo.de")
@@ -71,17 +65,18 @@ class TestSsllabs:
 
     @pytest.mark.asyncio
     async def test_analyze_max_assessments(self, request, mocker):
-        with patch("asyncio.sleep", new=AsyncMock()), \
-             patch("ssllabs.api.analyze.Analyze.get",
-                   new=AsyncMock(return_value=from_dict(data_class=HostData,
-                                                        data=request.cls.analyze))), \
-             patch("ssllabs.api.info.Info.get",
-                   new=AsyncMock(side_effect=[
-                       from_dict(data_class=InfoData,
-                                 data=request.cls.info_max_assessments),
-                       from_dict(data_class=InfoData,
-                                 data=request.cls.info)
-                   ])):
+        with patch("asyncio.sleep", new=AsyncMock()), patch(
+            "ssllabs.api.analyze.Analyze.get",
+            new=AsyncMock(return_value=from_dict(data_class=HostData, data=request.cls.analyze)),
+        ), patch(
+            "ssllabs.api.info.Info.get",
+            new=AsyncMock(
+                side_effect=[
+                    from_dict(data_class=InfoData, data=request.cls.info_max_assessments),
+                    from_dict(data_class=InfoData, data=request.cls.info),
+                ]
+            ),
+        ):
             spy = mocker.spy(asyncio, "sleep")
             ssllabs = Ssllabs()
             await ssllabs.analyze(host="devolo.de")
@@ -89,13 +84,13 @@ class TestSsllabs:
 
     @pytest.mark.asyncio
     async def test_analyze_running_assessments(self, request, mocker):
-        with patch("asyncio.sleep", new=AsyncMock()), \
-             patch("ssllabs.api.analyze.Analyze.get",
-                   new=AsyncMock(return_value=from_dict(data_class=HostData,
-                                                        data=request.cls.analyze))), \
-             patch("ssllabs.api.info.Info.get",
-                   new=AsyncMock(return_value=from_dict(data_class=InfoData,
-                                                        data=request.cls.info_running_assessments))):
+        with patch("asyncio.sleep", new=AsyncMock()), patch(
+            "ssllabs.api.analyze.Analyze.get",
+            new=AsyncMock(return_value=from_dict(data_class=HostData, data=request.cls.analyze)),
+        ), patch(
+            "ssllabs.api.info.Info.get",
+            new=AsyncMock(return_value=from_dict(data_class=InfoData, data=request.cls.info_running_assessments)),
+        ):
             spy = mocker.spy(asyncio, "sleep")
             ssllabs = Ssllabs()
             await ssllabs.analyze(host="devolo.de")
@@ -103,8 +98,9 @@ class TestSsllabs:
 
     @pytest.mark.asyncio
     async def test_root_certs(self, request):
-        with patch("ssllabs.api.root_certs_raw.RootCertsRaw.get",
-                   new=AsyncMock(return_value=request.cls.root_certs["rootCerts"])):
+        with patch(
+            "ssllabs.api.root_certs_raw.RootCertsRaw.get", new=AsyncMock(return_value=request.cls.root_certs["rootCerts"])
+        ):
             ssllabs = Ssllabs()
             root_certs = await ssllabs.root_certs()
             assert root_certs == request.cls.root_certs["rootCerts"]
@@ -117,9 +113,9 @@ class TestSsllabs:
 
     @pytest.mark.asyncio
     async def test_availabile(self, request):
-        with patch("ssllabs.api.info.Info.get",
-                   new=AsyncMock(return_Value=from_dict(data_class=InfoData,
-                                                        data=request.cls.info))):
+        with patch(
+            "ssllabs.api.info.Info.get", new=AsyncMock(return_Value=from_dict(data_class=InfoData, data=request.cls.info))
+        ):
             ssllabs = Ssllabs()
             assert await ssllabs.availability()
 
@@ -132,9 +128,8 @@ class TestSsllabs:
 
     @pytest.mark.asyncio
     async def test_unavailabile_status_error(self):
-        with patch("ssllabs.api.info.Info.get",
-                   new=AsyncMock(side_effect=HTTPStatusError(message="",
-                                                             request="",
-                                                             response=""))):
+        with patch(
+            "ssllabs.api.info.Info.get", new=AsyncMock(side_effect=HTTPStatusError(message="", request="", response=""))
+        ):
             ssllabs = Ssllabs()
             assert not await ssllabs.availability()

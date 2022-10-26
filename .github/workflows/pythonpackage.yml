@@ -43,6 +43,7 @@ jobs:
       run: |
         pip install mypy types-setuptools
         mypy --ignore-missing-imports ssllabs
+
   test:
     name: Test with Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
