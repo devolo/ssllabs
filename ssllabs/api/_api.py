@@ -21,7 +21,7 @@ class _Api(ABC):
             r = await self._client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
         else:
             async with httpx.AsyncClient() as client:
-                r = await client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs)
+                r = await client.get(f"{SSLLABS_URL}{api_endpoint}", params=kwargs, timeout=30.0)
         r.raise_for_status()
         return r
 
