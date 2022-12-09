@@ -21,5 +21,5 @@ class HstsPreloadData:
     error: Optional[str]
     """Error message, when status is 'error'"""
 
-    sourceTime: int
+    sourceTime: Optional[int]
     """Time, as a Unix timestamp, when the preload database was retrieved"""
