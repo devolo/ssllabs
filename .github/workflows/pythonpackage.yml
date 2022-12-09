@@ -41,14 +41,14 @@ jobs:
         pylint --exit-zero --score=n --disable=C,E,R --enable=useless-suppression ssllabs
     - name: Lint with mypy
       run: |
-        pip install mypy
+        pip install mypy types-setuptools
         mypy --ignore-missing-imports ssllabs
   test:
     name: Test with Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
     - name: Checkout sources
       uses: actions/checkout@v2
