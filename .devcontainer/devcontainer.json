@@ -10,7 +10,7 @@
 	},
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
-		"terminal.integrated.shell.linux": "/bin/bash",
+		"terminal.integrated.defaultProfile.linux": "bash",
 		"python.pythonPath": "/usr/local/bin/python",
 		"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
 		"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
@@ -28,11 +28,13 @@
 		"python.linting.pylintEnabled": true,
 		"python.linting.pylintArgs": [
 			"--disable=C,R",
-			"--enable=useless-suppression",
+			"--enable=useless-suppression"
 		],
-		"python.sortImports.path": "/usr/local/bin/isort",
-		"python.sortImports.args": [
-			"--settings-path=/workspaces/ssllabs/setup.cfg",
+		"isort.path": [
+			"/usr/local/bin/isort"
+		],
+		"isort.args": [
+			"--settings-path=/workspaces/ssllabs/setup.cfg"
 		],
 		"python.testing.nosetestsEnabled": false,
 		"python.testing.pytestEnabled": true,
@@ -40,15 +42,15 @@
 		"editor.formatOnSave": true,
 		"files.trimTrailingWhitespace": true,
 		"files.trimFinalNewlines": true,
-		"files.insertFinalNewline": true,
+		"files.insertFinalNewline": true
 	},
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-python.vscode-pylance",
-		"visualstudioexptteam.vscodeintellicode",
+		"visualstudioexptteam.vscodeintellicode"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip install -e .[test] pre-commit && pre-commit install",
+	"postCreateCommand": "pip install -e .[test] pre-commit && pre-commit install"
 }
