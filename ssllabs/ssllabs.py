@@ -1,7 +1,8 @@
 import asyncio
 import logging
+from typing import Optional
 
-from httpx import ConnectTimeout, HTTPStatusError, ReadTimeout
+from httpx import AsyncClient, ConnectTimeout, HTTPStatusError, ReadTimeout
 
 from .api import Analyze, Info, RootCertsRaw, StatusCodes
 from .data.host import HostData
@@ -12,7 +13,8 @@ from .data.status_codes import StatusCodesData
 class Ssllabs:
     """Highlevel methods to interact with the SSL Labs Assessment APIs."""
 
-    def __init__(self):
+    def __init__(self, client: Optional[AsyncClient] = None):
+        self._client = client
         self._logger = logging.getLogger("ssllabs.Ssllabs")
         self._semaphore = asyncio.Semaphore(1)
 
@@ -22,7 +24,7 @@ class Ssllabs:
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#error-response-status-codes
         """
-        i = Info()
+        i = Info(self._client)
         try:
             await i.get()
             self._logger.info("SSL Labs servers are up an running.")
@@ -43,7 +45,7 @@ class Ssllabs:
         """
         await self._semaphore.acquire()
         self._logger.info("Analyzing %s", host)
-        i = Info()
+        i = Info(self._client)
         info = await i.get()
 
         # Wait for a free slot, if all slots are in use
@@ -56,7 +58,7 @@ class Ssllabs:
         if info.currentAssessments != 0:
             await asyncio.sleep(info.newAssessmentCoolOff / 1000)
 
-        a = Analyze()
+        a = Analyze(self._client)
         host_object = await a.get(
             host=host, startNew="on", publish="on" if publish else "off", ignoreMismatch="on" if ignore_mismatch else "off"
         )
@@ -73,7 +75,7 @@ class Ssllabs:
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#info
         """
-        i = Info()
+        i = Info(self._client)
         return await i.get()
 
     async def root_certs(self, trust_store: int = 1) -> str:
@@ -89,7 +91,7 @@ class Ssllabs:
                 """Trust store not found. Please choose on of the following:
             1-Mozilla, 2-Apple MacOS, 3-Android, 4-Java, 5-Windows"""
             )
-        rcr = RootCertsRaw()
+        rcr = RootCertsRaw(self._client)
         return await rcr.get(trustStore=trust_store)
 
     async def status_codes(self) -> StatusCodesData:
@@ -98,5 +100,5 @@ class Ssllabs:
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#retrieve-known-status-codes
         """
-        sc = StatusCodes()
+        sc = StatusCodes(self._client)
         return await sc.get()
