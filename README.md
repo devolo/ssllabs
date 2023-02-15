@@ -138,6 +138,8 @@ async def get_grade():
     api = Endpoint()
     endpoint = await api.get(host="devolo.de", s="195.201.179.93")
     return endpoint.grade
+
+asyncio.run(get_grade())
 ```
 
 Classes are called like the [API call](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-calls) without the leading get. The get method will query the API. It will take the parameters like in the documentation and return a dataclass representing the object, the API describes. One exception in the naming: the getEndpointData call is implemented in the Endpoint class to be able to better distinguish it from its EndpointData result object.
@@ -145,3 +147,20 @@ Classes are called like the [API call](https://github.com/ssllabs/ssllabs-scan/b
 ## Exceptions
 
 Three types of exceptions might hit you, if the connection to SSL Labs' API is affected: ```httpx.ConnectTimeout``` or ```httpx.ReadTimeout``` appear, if the servers are down, and ```httpx.HTTPStatusError``` appears, if there is a client or server [error response](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#error-response-status-codes). In this cases, you are asked to wait 15 to 30 minutes before you try again.
+
+## Using an own HTTP client
+
+If you have special needs (e.g. what to use a proxy server), you can create an own HTTP client. Please read the [httpx documentation](https://www.python-httpx.org/advanced) to find out which possibilities you have.
+
+```python
+import asyncio
+
+from httpx import AsyncClient
+from ssllabs import Ssllabs
+
+async def analyze():
+    async with AsyncClient(proxies="http://localhost:8030") as client:
+        ssllabs = Ssllabs(client)
+        return await ssllabs.analyze(host="devolo.de")
+
+asyncio.run(analyze())
