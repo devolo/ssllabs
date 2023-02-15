@@ -18,7 +18,6 @@ from ssllabs.data.status_codes import StatusCodesData
 
 
 class TestApi:
-
     API_CALLS = [
         (Endpoint, EndpointData, {"host": "devolo.de", "s": "195.201.179.93"}),
         (StatusCodes, StatusCodesData, {}),

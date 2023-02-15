@@ -159,7 +159,7 @@ from httpx import AsyncClient
 from ssllabs import Ssllabs
 
 async def analyze():
-    with AsyncClient(proxies="http://localhost:8030") as client:
+    async with AsyncClient(proxies="http://localhost:8030") as client:
         ssllabs = Ssllabs(client)
         return await ssllabs.analyze(host="devolo.de")
 

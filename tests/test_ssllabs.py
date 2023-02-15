@@ -19,7 +19,6 @@ except ImportError:
 
 
 class TestSsllabs:
-
     API_CALLS: list = [("info.Info", InfoData, {}), ("status_codes.StatusCodes", StatusCodesData, {})]
 
     @pytest.mark.asyncio
