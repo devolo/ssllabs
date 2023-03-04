@@ -164,3 +164,59 @@ async def analyze():
         return await ssllabs.analyze(host="devolo.de")
 
 asyncio.run(analyze())
+```
+
+## Example Python script to retrieve an Host grade
+
+* `vim /tmp/get_host_grade.py`
+
+```python
+#!/bin/env python3
+
+# Requirements
+# * Linux
+# * Python >= 3.7.9
+# * PIP >= 20.3.3
+#
+# pip install ssllabs
+
+import asyncio
+
+from ssllabs import Ssllabs
+from ssllabs.api import Analyze
+
+async def availability():
+    ssllabs = Ssllabs()
+    return await ssllabs.availability()
+
+async def get_host_endpoints(h):
+    api = Analyze()
+    host = await api.get(h, fromCache="on", maxAge=1, all="done")
+    if (host.status in ['READY','ERROR']):
+       return host.endpoints
+    else:
+       while (host.status not in ['READY','ERROR']):
+          host = await api.get(h, fromCache="on", maxAge=1, all="done")
+       return host.endpoints
+
+def get_grade_or_fail_reason(host):
+    if (asyncio.run(availability())):
+       endpoints = asyncio.run(get_host_endpoints(host))
+    
+       result_array = []
+       for e in endpoints:
+           if (e.grade):
+              result_array.append(e.grade)
+           else:
+              result_array.append(e.statusMessage)
+
+       return result_array
+
+# MAIN
+
+print(get_grade_or_fail_reason("ssllabs.com"))
+```
+
+### Usage
+
+`python3 /tmp/get_host_grade.py`
