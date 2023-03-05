@@ -33,16 +33,20 @@ class TestSsllabs:
             assert dataclasses.asdict(api_data) == getattr(request.cls, call)
 
     @pytest.mark.asyncio
-    async def test_analyze(self, request):
+    async def test_analyze(self, request: pytest.FixtureRequest) -> None:
         with patch(
             "ssllabs.api.info.Info.get", new=AsyncMock(return_value=from_dict(data_class=InfoData, data=request.cls.info))
         ), patch(
             "ssllabs.api.analyze.Analyze.get",
             new=AsyncMock(return_value=from_dict(data_class=HostData, data=request.cls.analyze)),
-        ):
+        ) as get:
             ssllabs = Ssllabs()
             api_data = await ssllabs.analyze(host="devolo.de")
             assert dataclasses.asdict(api_data) == request.cls.analyze
+            assert get.call_args.kwargs["startNew"] == "on"
+            api_data = await ssllabs.analyze(host="devolo.de", from_cache=True)
+            assert dataclasses.asdict(api_data) == request.cls.analyze
+            assert get.call_args.kwargs["startNew"] == "off"
 
     @pytest.mark.asyncio
     async def test_analyze_not_ready_yet(self, request, mocker):
