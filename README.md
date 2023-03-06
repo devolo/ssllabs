@@ -59,7 +59,7 @@ async def analyze():
 asyncio.run(analyze())
 ```
 
-This will give you a [Host object](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#host) as dataclass. This call runs quite long as it takes time to run all tests. You probably know that from using the [webinterface](https://www.ssllabs.com/ssltest). If you don't need a fresh result on every run, you can allow using ssllabs' cache. This will speed up the tests, if there are cached results.
+This will give you a [Host object](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#host) as dataclass. This call runs quite long as it takes time to run all tests. You probably know that from using the [webinterface](https://www.ssllabs.com/ssltest). If you don't need a fresh result on every run, you can allow using ssllabs' cache. This will speed up the tests, if there are cached results. The maximum cache validity can be set in full hour steps.
 
 ```python
 import asyncio
@@ -68,7 +68,7 @@ from ssllabs import Ssllabs
 
 async def analyze():
     ssllabs = Ssllabs()
-    return await ssllabs.analyze(host="devolo.de", from_cache=True)
+    return await ssllabs.analyze(host="devolo.de", from_cache=True, max_age=1)
 
 asyncio.run(analyze())
 ```

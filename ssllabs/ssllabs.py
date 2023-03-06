@@ -2,7 +2,7 @@ import asyncio
 import logging
 from typing import Optional
 
-from httpx import AsyncClient, ConnectTimeout, HTTPStatusError, ReadTimeout
+from httpx import AsyncClient, ConnectTimeout, HTTPStatusError, ReadError, ReadTimeout
 
 from .api import Analyze, Info, RootCertsRaw, StatusCodes
 from .data.host import HostData
@@ -29,12 +29,17 @@ class Ssllabs:
             await i.get()
             self._logger.info("SSL Labs servers are up an running.")
             return True
-        except (HTTPStatusError, ReadTimeout, ConnectTimeout) as ex:
+        except (HTTPStatusError, ReadError, ReadTimeout, ConnectTimeout) as ex:
             self._logger.error(ex)
             return False
 
     async def analyze(
-        self, host: str, publish: bool = False, ignore_mismatch: bool = False, from_cache: bool = False
+        self,
+        host: str,
+        publish: bool = False,
+        ignore_mismatch: bool = False,
+        from_cache: bool = False,
+        max_age: Optional[int] = None,
     ) -> HostData:
         """
         Test a particular host with respect to the cool off and the maximum number of assessments.
@@ -43,6 +48,7 @@ class Ssllabs:
         :param publish: True if assessment results should be published on the public results boards
         :param ignore_mismatch: True if assessment shall proceed even when the server certificate doesn't match the hostname
         :param from_cache: True if cached results should be used instead of new assessments
+        :param max_age: Maximum age cached data might have in hours
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-usage
         """
@@ -67,6 +73,7 @@ class Ssllabs:
             startNew="off" if from_cache else "on",
             publish="on" if publish else "off",
             ignoreMismatch="on" if ignore_mismatch else "off",
+            maxAge=max_age,
         )
         self._semaphore.release()
         while host_object.status not in ["READY", "ERROR"]:

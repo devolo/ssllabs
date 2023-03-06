@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 from dacite import from_dict
-from httpx import ConnectTimeout, HTTPStatusError, ReadTimeout
+from httpx import ConnectTimeout, HTTPStatusError, ReadError, ReadTimeout, TransportError
 
 from ssllabs import Ssllabs
 from ssllabs.api.analyze import Analyze
@@ -43,10 +43,10 @@ class TestSsllabs:
             ssllabs = Ssllabs()
             api_data = await ssllabs.analyze(host="devolo.de")
             assert dataclasses.asdict(api_data) == request.cls.analyze
-            get.assert_called_with(host="devolo.de", ignoreMismatch="off", publish="off", startNew="on")
-            api_data = await ssllabs.analyze(host="devolo.de", from_cache=True)
+            get.assert_called_with(host="devolo.de", ignoreMismatch="off", publish="off", startNew="on", maxAge=None)
+            api_data = await ssllabs.analyze(host="devolo.de", from_cache=True, max_age=1)
             assert dataclasses.asdict(api_data) == request.cls.analyze
-            get.assert_called_with(host="devolo.de", ignoreMismatch="off", publish="off", startNew="off")
+            get.assert_called_with(host="devolo.de", ignoreMismatch="off", publish="off", startNew="off", maxAge=1)
 
     @pytest.mark.asyncio
     async def test_analyze_not_ready_yet(self, request, mocker):
@@ -123,8 +123,8 @@ class TestSsllabs:
             assert await ssllabs.availability()
 
     @pytest.mark.asyncio
-    @pytest.mark.parametrize("exception", [ReadTimeout, ConnectTimeout])
-    async def test_unavailabile_timeout(self, exception):
+    @pytest.mark.parametrize("exception", [ReadError, ReadTimeout, ConnectTimeout])
+    async def test_unavailabile_timeout(self, exception: TransportError) -> None:
         with patch("ssllabs.api.info.Info.get", new=AsyncMock(side_effect=exception(message="", request=""))):
             ssllabs = Ssllabs()
             assert not await ssllabs.availability()
