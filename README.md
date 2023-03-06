@@ -59,7 +59,19 @@ async def analyze():
 asyncio.run(analyze())
 ```
 
-This will give you a [Host object](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#host) as dataclass. This call runs quite long as it takes time to run all tests. You probably know that from using the [webinterface](https://www.ssllabs.com/ssltest).
+This will give you a [Host object](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#host) as dataclass. This call runs quite long as it takes time to run all tests. You probably know that from using the [webinterface](https://www.ssllabs.com/ssltest). If you don't need a fresh result on every run, you can allow using ssllabs' cache. This will speed up the tests, if there are cached results. The maximum cache validity can be set in full hour steps.
+
+```python
+import asyncio
+
+from ssllabs import Ssllabs
+
+async def analyze():
+    ssllabs = Ssllabs()
+    return await ssllabs.analyze(host="devolo.de", from_cache=True, max_age=1)
+
+asyncio.run(analyze())
+```
 
 ### Check availability of the SSL Labs servers
 
@@ -75,7 +87,7 @@ async def availability():
 asyncio.run(availability())
 ```
 
-This will give you True, if the servers are up and running, otherwise False. It will also report False, if you exeeded your rate limits.
+This will give you True, if the servers are up and running, otherwise False. It will also report False, if you exceeded your rate limits.
 
 ### Retrieve API information
 
@@ -107,7 +119,7 @@ async def root_certs():
 asyncio.run(root_certs())
 ```
 
-This will give you a string containing the latest root certificates used for trust validation. By default it used the certificates provided by Mozilla. You can choose a differenty store by changing trust_store to 1: Mozilla, 2: Apple MacOS, 3: Android, 4: Java or 5: Windows.
+This will give you a string containing the latest root certificates used for trust validation. By default it used the certificates provided by Mozilla. You can choose a differently store by changing trust_store to 1: Mozilla, 2: Apple MacOS, 3: Android, 4: Java or 5: Windows.
 
 ### Retrieve known status codes
 
