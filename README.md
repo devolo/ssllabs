@@ -137,6 +137,10 @@ asyncio.run(status_codes())
 
 This will give you a [StatusCodes object](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#statuscodes) as dataclass.
 
+### Example to print the grade of multiple servers
+
+If you are just interested in the grade of servers, you can take [this example](https://github.com/devolo/ssllabs/blob/master/example.py) as s stating point. Just exchange the list of hosts you want to query.
+
 ## Low level usage
 
 If the high level methods do not match your use case, you can access each [API call](https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-calls).
