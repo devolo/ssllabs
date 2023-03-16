@@ -139,7 +139,7 @@ This will give you a [StatusCodes object](https://github.com/ssllabs/ssllabs-sca
 
 ### Example to print the grade of multiple servers
 
-If you are just interested in the grade of servers, you can take [this example](https://github.com/devolo/ssllabs/blob/master/example.py) as s starting point. Just exchange the list of hosts you want to query.
+If you are just interested in the grade of servers, you can take [this example](https://github.com/devolo/ssllabs/blob/master/example.py) as a starting point. Just exchange the list of hosts you want to query.
 
 ## Low level usage
 
