@@ -21,7 +21,7 @@ version = get_distribution("ssllabs").version
 # -- Project information -----------------------------------------------------
 
 project = get_distribution("ssllabs").project_name
-copyright = "2021, devolo AG"
+copyright = "2023, devolo GmbH"
 author = "Markus Bong, Guido Schmitz"
 
 # -- General configuration ---------------------------------------------------
