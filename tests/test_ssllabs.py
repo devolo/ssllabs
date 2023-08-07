@@ -43,10 +43,14 @@ class TestSsllabs:
             ssllabs = Ssllabs()
             api_data = await ssllabs.analyze(host="devolo.de")
             assert dataclasses.asdict(api_data) == request.cls.analyze
-            get.assert_called_with(host="devolo.de", ignoreMismatch="off", publish="off", startNew="on", maxAge=None)
+            get.assert_called_with(
+                host="devolo.de", ignoreMismatch="off", publish="off", startNew="on", fromCache="off", maxAge=None
+            )
             api_data = await ssllabs.analyze(host="devolo.de", from_cache=True, max_age=1)
             assert dataclasses.asdict(api_data) == request.cls.analyze
-            get.assert_called_with(host="devolo.de", ignoreMismatch="off", publish="off", startNew="off", maxAge=1)
+            get.assert_called_with(
+                host="devolo.de", ignoreMismatch="off", publish="off", startNew="off", fromCache="on", maxAge=1
+            )
 
     @pytest.mark.asyncio
     async def test_analyze_not_ready_yet(self, request, mocker):
