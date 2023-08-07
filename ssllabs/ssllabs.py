@@ -71,6 +71,7 @@ class Ssllabs:
         host_object = await a.get(
             host=host,
             startNew="off" if from_cache else "on",
+            fromCache="on" if from_cache else "off",
             publish="on" if publish else "off",
             ignoreMismatch="on" if ignore_mismatch else "off",
             maxAge=max_age,
