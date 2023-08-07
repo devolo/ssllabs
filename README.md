@@ -7,7 +7,7 @@ This project implements the [Qualys SSL Labs](https://www.ssllabs.com/ssltest/) 
 Defining the system requirements with exact versions typically is difficult. But there is a tested environment:
 
 * Linux
-* Python 3.7.9
+* Python 3.7.10
 * pip 20.3.3
 * dacite 1.6.0
 * httpx 0.16.1
