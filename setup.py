@@ -34,7 +34,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=["dacite", "httpx"],
+    install_requires=["importlib-metadata;python_version<'3.8'", "dacite", "httpx"],
     extras_require={
         "dev": [
             "pre-commit",
