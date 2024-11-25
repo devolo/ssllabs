@@ -39,7 +39,6 @@ class Ssllabs:
         publish: bool = False,
         ignore_mismatch: bool = False,
         from_cache: bool = False,
-        include_details: bool = True,
         max_age: Optional[int] = None,
     ) -> HostData:
         """
@@ -49,7 +48,6 @@ class Ssllabs:
         :param publish: True if assessment results should be published on the public results boards
         :param ignore_mismatch: True if assessment shall proceed even when the server certificate doesn't match the hostname
         :param from_cache: True if cached results should be used instead of new assessments
-        :param include_details: True if endpoint details should be returned
         :param max_age: Maximum age cached data might have in hours
 
         See also: https://github.com/ssllabs/ssllabs-scan/blob/master/ssllabs-api-docs-v3.md#protocol-usage
@@ -76,14 +74,14 @@ class Ssllabs:
             fromCache="on" if from_cache else "off",
             publish="on" if publish else "off",
             ignoreMismatch="on" if ignore_mismatch else "off",
-            all="done" if include_details else "off",
+            all="done",
             maxAge=max_age,
         )
         self._semaphore.release()
         while host_object.status not in ["READY", "ERROR"]:
             self._logger.debug("Assessment of %s not ready yet.", host)
             await asyncio.sleep(10)
-            host_object = await a.get(host=host, all="done" if include_details else "off")
+            host_object = await a.get(host=host, all="done")
         return host_object
 
     async def info(self) -> InfoData:
