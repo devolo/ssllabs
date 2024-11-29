@@ -74,6 +74,7 @@ class Ssllabs:
             fromCache="on" if from_cache else "off",
             publish="on" if publish else "off",
             ignoreMismatch="on" if ignore_mismatch else "off",
+            all="done",
             maxAge=max_age,
         )
         self._semaphore.release()
