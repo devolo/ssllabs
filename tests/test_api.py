@@ -30,6 +30,8 @@ class TestApi:
         httpx_mock.add_response(json=request.cls.info)
         r = await _Api()._call("")  # pylint: disable=protected-access
         assert r.json() == request.cls.info
+
+        httpx_mock.add_response(json=request.cls.info)
         client = AsyncClient()
         r = await _Api(client)._call("")  # pylint: disable=protected-access
         await client.aclose()
