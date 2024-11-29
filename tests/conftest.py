@@ -16,14 +16,3 @@ def test_data_fixture(request):
         with file.open("r") as fh:
             test_data = json.load(fh)
             setattr(request.cls, filename, test_data)
-
-
-@pytest.fixture()
-def event_loop():
-    loop = asyncio.get_event_loop()
-    yield loop
-    to_cancel = asyncio.tasks.all_tasks(loop)
-    for task in to_cancel:
-        task.cancel()
-    loop.run_until_complete(asyncio.tasks.gather(*to_cancel, return_exceptions=True))
-    loop.close()
